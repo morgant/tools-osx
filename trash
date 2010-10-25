@@ -6,6 +6,8 @@
 # 
 # v0.1   2007-05-21 - Morgan Aldridge <morgant@makkintosshu.com>
 #                     Initial version.
+# v0.2   2010-10-25 - Morgan Aldridge
+#                     
 # 
 
 # TO DO:
@@ -15,14 +17,11 @@
 # - Append an incremented number to the end of a filename, but before the file
 #   extension, if a file with the same name already exists.
 
-# Reference:
-# http://pegasus.rutgers.edu/~elflord/unix/bash-tute.html
-
 # global variables
-VERBOSE=0
-HELP=0
-user=`whoami`
-TRASH="/Users/${user}/.Trash/"
+verbose=false
+help=false
+user=$(whoami)
+trash="/Users/${user}/.Trash/"
 
 # print usage instructions (help)
 function usage() {
@@ -32,30 +31,30 @@ function usage() {
 }
 
 # see if any arguments were passed in
-if test $# -gt 0 ; then
+if [ $# -gt 0 ]; then
 	# if so, step through them all and process them
-	while test $# -gt 0 ; do
+	while [ $# -gt 0 ]; do
 		# see if the user intended us to run in verbose mode
-		if test "$1" = "-v" ; then
+		if [ "$1" = "-v" ]; then
 			shift
-			VERBOSE=1
+			verbose=true
 		# see if the user requested help
-		elif test "$1" = "-h" ; then
+		elif [ "$1" = "-h" ]; then
 			shift
-			HELP=1
+			help=true
 			usage
 		# handle remaining arguments as if they were files
 		else
 			# don't bother doing anything if the user requested help
-			if test $HELP -eq 0 ; then
+			if ! $help; then
 				#printf "argument: '%s'\n" $1
 				#printf "destination: '%s'\n" $TRASH
-				if test $VERBOSE -eq 1 ; then
+				if $verbose; then
 					# move the file to the trash (verbose)
-					mv -v $1 $TRASH
+					mv -v "$1" "$trash"
 				else
-					# mover the file to the trash
-					mv $1 $TRASH
+					# move the file to the trash
+					mv "$1" "$trash"
 				fi
 			fi
 			shift
