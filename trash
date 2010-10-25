@@ -22,6 +22,7 @@ verbose=false
 help=false
 user=$(whoami)
 trash="/Users/${user}/.Trash/"
+v=''
 
 # print usage instructions (help)
 function usage() {
@@ -49,13 +50,9 @@ if [ $# -gt 0 ]; then
 			if ! $help; then
 				#printf "argument: '%s'\n" $1
 				#printf "destination: '%s'\n" $TRASH
-				if $verbose; then
-					# move the file to the trash (verbose)
-					mv -v "$1" "$trash"
-				else
-					# move the file to the trash
-					mv "$1" "$trash"
-				fi
+				if $verbose; then v="-v"; fi
+				# move the file to the trash
+				mv $v "$1" "$trash"
 			fi
 			shift
 		fi
