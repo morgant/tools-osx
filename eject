@@ -6,11 +6,10 @@
 # v0.1   2007-05-21 - Morgan Aldridge <morgant@makkintosshu.com>
 #                     Initial version.
 # v0.2   2010-10-24 - Morgan Aldridge
-#                     []
+#                     Minor cleanup. Automatically prepend /Volumes/ to volume name if omitted.
 # 
 
 # TO DO:
-# - Automatically prepend "/Volumes/" if user only specifies volume name and not full path.
 # - Verbose doesn't currently do anything.
 
 # global variables
@@ -41,11 +40,11 @@ if [ $# -gt 0 ]; then
                         # don't bother doing anything if the user requested help
                         if ! $help; then
 				# try to detect whether the user prepended "/Volumes/" to the volume name
-			#if test `echo $1 | grep -q /Volumes/` -eq 0 ; then
+				if [ "${1:0:9}" = "/Volumes/" ]; then
 					diskutil eject "$1"
-			#	else
-			#		diskutil eject /Volumes/$1
-			#	fi
+				else
+					diskutil eject "/Volumes/$1"
+				fi
                         fi
                         shift
                 fi
