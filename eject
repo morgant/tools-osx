@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# 
+# eject - 
+# 
+# v0.1   2007-05-21 - Morgan Aldridge <morgant@makkintosshu.com>
+#                     Initial version.
+# 
+
+# TO DO:
+# - Automatically prepend "/Volumes/" if user only specifies volume name and not full path.
+# - Verbose doesn't currently do anything.
+
+# global variables
+VERBOSE=0
+HELP=0
+
+# print usage instructions (help)
+function usage() {
+	printf "Usage: eject [options] volume ...\n"
+	printf "  -v		verbose output\n"
+	printf "  -h		print these usage instructions\n"
+}
+
+# see if any arguments were passed in
+if test $# -gt 0 ; then
+	# if so, step through them all and process them
+	while test $# -gt 0 ; do
+		 # see if the user intended us to run in verbose mode
+                if test "$1" = "-v" ; then
+                        shift
+                        VERBOSE=1
+                # see if the user requested help
+                elif test "$1" = "-h" ; then
+                        shift
+                        HELP=1
+                        usage
+		else
+                        # don't bother doing anything if the user requested help
+                        if test $HELP -eq 0 ; then
+				# try to detect whether the user prepended "/Volumes/" to the volume name
+			#if test `echo $1 | grep -q /Volumes/` -eq 0 ; then
+					diskutil eject "$1"
+			#	else
+			#		diskutil eject /Volumes/$1
+			#	fi
+                        fi
+                        shift
+                fi
+	done
+else
+	printf "No volumes were specified to be ejected.\n\n"
+	usage
+fi

@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# 
+# trash - Move files to the appropriate .Trash file on Mac OS X. (Intended
+#         as an alternative to 'rm' which immediately deletes the file.)
+# 
+# v0.1   2007-05-21 - Morgan Aldridge <morgant@makkintosshu.com>
+#                     Initial version.
+# 
+
+# TO DO:
+# - Create the ~/.Trash directory if it doesn't exist.
+# - Pick the appropriate .Trashes sub-folder on the correct volume depending on
+#   the location of the file being moved to the trash.
+# - Append an incremented number to the end of a filename, but before the file
+#   extension, if a file with the same name already exists.
+
+# Reference:
+# http://pegasus.rutgers.edu/~elflord/unix/bash-tute.html
+
+# global variables
+VERBOSE=0
+HELP=0
+user=`whoami`
+TRASH="/Users/${user}/.Trash/"
+
+# print usage instructions (help)
+function usage() {
+	printf "Usage: trash [options] file ...\n"
+	printf "  -v		verbose output\n"
+	printf "  -h		print these usage instructions\n"
+}
+
+# see if any arguments were passed in
+if test $# -gt 0 ; then
+	# if so, step through them all and process them
+	while test $# -gt 0 ; do
+		# see if the user intended us to run in verbose mode
+		if test "$1" = "-v" ; then
+			shift
+			VERBOSE=1
+		# see if the user requested help
+		elif test "$1" = "-h" ; then
+			shift
+			HELP=1
+			usage
+		# handle remaining arguments as if they were files
+		else
+			# don't bother doing anything if the user requested help
+			if test $HELP -eq 0 ; then
+				#printf "argument: '%s'\n" $1
+				#printf "destination: '%s'\n" $TRASH
+				if test $VERBOSE -eq 1 ; then
+					# move the file to the trash (verbose)
+					mv -v $1 $TRASH
+				else
+					# mover the file to the trash
+					mv $1 $TRASH
+				fi
+			fi
+			shift
+		fi
+	done
+else
+	printf "No files were specified to be moved to the trash.\n\n"
+	usage
+fi

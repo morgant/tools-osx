@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# 
+# urlmnt - Mount an afp/smb/ftp/webdav url as a volume in Mac OS X
+# 
+
+# TO DO:
+# - 
+
+# Reference:
+# http://www.macosxhints.com/article.php?story=2001120201020569
+
+# global variables
+VERBOSE=0
+HELP=0
+
+# print usage instructions (help)
+function usage() {
+	printf "Usage: urlmnt [options] url ...\n"
+	printf "  -v		verbose output\n"
+	printf "  -h		print these usage instructions\n"
+}
+
+# see if any arguments were passed in
+if test $# -gt 0 ; then
+	# if so, step through them all and process them
+	print "test\n"
+else
+	printf "You did not specify the URL of the volume to mount.\n\n"
+	usage
+fi
