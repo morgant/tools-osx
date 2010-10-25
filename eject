@@ -5,6 +5,8 @@
 # 
 # v0.1   2007-05-21 - Morgan Aldridge <morgant@makkintosshu.com>
 #                     Initial version.
+# v0.2   2010-10-24 - Morgan Aldridge
+#                     []
 # 
 
 # TO DO:
@@ -12,8 +14,8 @@
 # - Verbose doesn't currently do anything.
 
 # global variables
-VERBOSE=0
-HELP=0
+verbose=false
+help=false
 
 # print usage instructions (help)
 function usage() {
@@ -23,21 +25,21 @@ function usage() {
 }
 
 # see if any arguments were passed in
-if test $# -gt 0 ; then
+if [ $# -gt 0 ]; then
 	# if so, step through them all and process them
-	while test $# -gt 0 ; do
+	while [ $# -gt 0 ]; do
 		 # see if the user intended us to run in verbose mode
-                if test "$1" = "-v" ; then
+                if [ "$1" = "-v" ]; then
                         shift
-                        VERBOSE=1
+                        verbose=true
                 # see if the user requested help
-                elif test "$1" = "-h" ; then
+                elif [ "$1" = "-h" ]; then
                         shift
-                        HELP=1
+                        help=true
                         usage
 		else
                         # don't bother doing anything if the user requested help
-                        if test $HELP -eq 0 ; then
+                        if ! $help; then
 				# try to detect whether the user prepended "/Volumes/" to the volume name
 			#if test `echo $1 | grep -q /Volumes/` -eq 0 ; then
 					diskutil eject "$1"
