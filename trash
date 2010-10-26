@@ -6,9 +6,12 @@
 # 
 # v0.1   2007-05-21 - Morgan Aldridge <morgant@makkintosshu.com>
 #                     Initial version.
-# v0.2   2010-10-25 - Morgan Aldridge
+# v0.2   2010-10-26 - Morgan Aldridge
 #                     Use appropriate .Trashes folder when trashing files
 #                     on other volumes. Create trash folder(s) if necessary.
+# v0.2.1 2010-10-26 - Morgan Aldridge
+#                     No longer using bash built-in regexp support in hopes
+#                     of support Mac OS X 10.4 and earlier.
 # 
 
 # TO DO:
@@ -52,10 +55,8 @@ if [ $# -gt 0 ]; then
 				if $verbose; then v="-v"; fi
 				# determine whether we should be putting this in a volume-specific .Trashes or user's .Trash
 				if [ "${1:0:9}" = "/Volumes/" -o "${1:0:9}" = "/Volumes/" ]; then
-					if [[ "$1" =~ ^/Volumes/([^/]+) ]]; then
-						vol="${BASH_REMATCH[1]}"
-						trash="/Volumes/${vol}/.Trashes/${uid}/"
-					fi
+					IFS=/ read -r -d '' _ _ vol _ <<< "$1"
+					trash="/Volumes/${vol}/.Trashes/${uid}/"
 				else
 					trash="/Users/${user}/.Trash/"
 				fi
