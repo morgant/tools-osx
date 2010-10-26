@@ -7,13 +7,12 @@
 # v0.1   2007-05-21 - Morgan Aldridge <morgant@makkintosshu.com>
 #                     Initial version.
 # v0.2   2010-10-25 - Morgan Aldridge
-#                     
+#                     Use appropriate .Trashes folder when trashing files
+#                     on other volumes. Create trash folder(s) if necessary.
 # 
 
 # TO DO:
-# - Create the ~/.Trash directory if it doesn't exist.
-# - Pick the appropriate .Trashes sub-folder on the correct volume depending on
-#   the location of the file being moved to the trash.
+# - Don't use .Trashes folder on root volume (check for symlink of volume to /)
 # - Append an incremented number to the end of a filename, but before the file
 #   extension, if a file with the same name already exists.
 
@@ -21,7 +20,7 @@
 verbose=false
 help=false
 user=$(whoami)
-trash="/Users/${user}/.Trash/"
+uid=$(id -u "$user")
 v=''
 
 # print usage instructions (help)
@@ -51,6 +50,19 @@ if [ $# -gt 0 ]; then
 				#printf "argument: '%s'\n" $1
 				#printf "destination: '%s'\n" $TRASH
 				if $verbose; then v="-v"; fi
+				# determine whether we should be putting this in a volume-specific .Trashes or user's .Trash
+				if [ "${1:0:9}" = "/Volumes/" -o "${1:0:9}" = "/Volumes/" ]; then
+					if [[ "$1" =~ ^/Volumes/([^/]+) ]]; then
+						vol="${BASH_REMATCH[1]}"
+						trash="/Volumes/${vol}/.Trashes/${uid}/"
+					fi
+				else
+					trash="/Users/${user}/.Trash/"
+				fi
+				# create the trash folder if necessary
+				if [ ! -d "$trash" ]; then
+					mkdir $v "$trash"
+				fi
 				# move the file to the trash
 				mv $v "$1" "$trash"
 			fi
