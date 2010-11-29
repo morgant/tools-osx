@@ -12,6 +12,8 @@
 # v0.2.1 2010-10-26 - Morgan Aldridge
 #                     No longer using bash built-in regexp support in hopes
 #                     of support Mac OS X 10.4 and earlier.
+# v0.3   2010-11-29 - Morgan Aldridge
+#                     Correctly handle full volume path which is root volume.
 # 
 
 # TO DO:
@@ -54,8 +56,8 @@ if [ $# -gt 0 ]; then
 				#printf "destination: '%s'\n" $TRASH
 				if $verbose; then v="-v"; fi
 				# determine whether we should be putting this in a volume-specific .Trashes or user's .Trash
-				if [ "${1:0:9}" = "/Volumes/" -o "${1:0:9}" = "/Volumes/" ]; then
-					IFS=/ read -r -d '' _ _ vol _ <<< "$1"
+				IFS=/ read -r -d '' _ _ vol _ <<< "$1"
+				if [[ ("${1:0:9}" == "/Volumes/") && (-n "$vol") && ($(readlink "/Volumes/$vol") != "/") ]]; then
 					trash="/Volumes/${vol}/.Trashes/${uid}/"
 				else
 					trash="/Users/${user}/.Trash/"
