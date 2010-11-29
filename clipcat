@@ -1,12 +1,6 @@
 #!/usr/bin/perl -w
 
-# clipcat: the misleadingly-named textClipping outputter for Mac OS X.
-# you'll need MacPerl and DeRez. I think the latter ships with OS X,
-# but at least comes with the dev tools (which by definition you have
-# if you installed MacPerl)
-# -------------------------
-# by David Kendal (http://dpk.org.uk / @dpkendal)
-# bug reports & comments to the address on http://dpk.org.uk/contact/
+# clipcat - https://gist.github.com/705623
 
 use strict;
 use utf8;
