@@ -7,18 +7,22 @@
 #                     Initial version.
 # v0.2   2010-10-24 - Morgan Aldridge
 #                     Minor cleanup. Automatically prepend /Volumes/ to volume name if omitted.
+# v0.3   2010-11-29 - Morgan Aldridge
+#                     Added "-f" option to force a disk to eject.
 # 
 
 # TO DO:
 # - Verbose doesn't currently do anything.
 
 # global variables
+force=false
 verbose=false
 help=false
 
 # print usage instructions (help)
 function usage() {
 	printf "Usage: eject [options] volume ...\n"
+	printf "  -f            force volume to be ejected, even if files/directories are open"
 	printf "  -v		verbose output\n"
 	printf "  -h		print these usage instructions\n"
 }
@@ -27,10 +31,14 @@ function usage() {
 if [ $# -gt 0 ]; then
 	# if so, step through them all and process them
 	while [ $# -gt 0 ]; do
-		 # see if the user intended us to run in verbose mode
+		# see if the user intended us to run in verbose mode
                 if [ "$1" = "-v" ]; then
                         shift
                         verbose=true
+		# see if the user intended us to force the action
+		elif [ "$1" = "-f" ]; then
+			shift
+			force=true
                 # see if the user requested help
                 elif [ "$1" = "-h" ]; then
                         shift
@@ -39,11 +47,12 @@ if [ $# -gt 0 ]; then
 		else
                         # don't bother doing anything if the user requested help
                         if ! $help; then
+				if $force; then f="force"; fi
 				# try to detect whether the user prepended "/Volumes/" to the volume name
 				if [ "${1:0:9}" = "/Volumes/" ]; then
-					diskutil eject "$1"
+					diskutil eject $f "$1"
 				else
-					diskutil eject "/Volumes/$1"
+					diskutil eject $f "/Volumes/$1"
 				fi
                         fi
                         shift
