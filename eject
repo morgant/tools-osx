@@ -58,7 +58,7 @@ if [ $# -gt 0 ]; then
 				# determine the type of filesystem of the mount so we can unmount network volumes appropriately
 				mnt_info=$(mount | grep "$vol")
 				IFS=\(, read -r -d '' _ fs_type _ <<< "$mnt_info"
-				if [ $fs_type = "afpfs" -o $fs_type = "smbfs" ]; then
+				if [[ ( $fs_type == "afpfs" ) || ( $fs_type == "smbfs" ) || ( $fs_type == "webdav" ) ]]; then
 					diskutil unmount $f "$vol"
 				else
 					diskutil eject $f "$vol"
