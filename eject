@@ -7,8 +7,9 @@
 #                     Initial version.
 # v0.2   2010-10-24 - Morgan Aldridge
 #                     Minor cleanup. Automatically prepend /Volumes/ to volume name if omitted.
-# v0.3   2010-11-29 - Morgan Aldridge
-#                     Added "-f" option to force a disk to eject.
+# v0.3   2010-11-30 - Morgan Aldridge
+#                     Added "-f" option to force a disk to eject. Now supports ejecting of
+#                     network volumes.
 # 
 
 # TO DO:
@@ -50,9 +51,17 @@ if [ $# -gt 0 ]; then
 				if $force; then f="force"; fi
 				# try to detect whether the user prepended "/Volumes/" to the volume name
 				if [ "${1:0:9}" = "/Volumes/" ]; then
-					diskutil eject $f "$1"
+					vol="$1"
 				else
-					diskutil eject $f "/Volumes/$1"
+					vol="/Volumes/$1"
+				fi
+				# determine the type of filesystem of the mount so we can unmount network volumes appropriately
+				mnt_info=$(mount | grep "$vol")
+				IFS=\(, read -r -d '' _ fs_type _ <<< "$mnt_info"
+				if [ $fs_type = "afpfs" -o $fs_type = "smbfs" ]; then
+					diskutil unmount $f "$vol"
+				else
+					diskutil eject $f "$vol"
 				fi
                         fi
                         shift
