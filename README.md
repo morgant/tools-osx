@@ -13,7 +13,7 @@ TOOLS
 
 ### eject
 
-`eject` ejects a volume. A simpler, shorter wrapper of `diskutil`'s various eject/unmount options and allows specifying either a full path in /Volumes or just the volume name.
+`eject` ejects a volume and all other volumes on the same disk. A simpler, shorter wrapper of `diskutil`'s various eject/unmount options and allows specifying either a full path in /Volumes or just the volume name.
 
 ### trash
 
