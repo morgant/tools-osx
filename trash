@@ -12,8 +12,10 @@
 # v0.2.1 2010-10-26 - Morgan Aldridge
 #                     No longer using bash built-in regexp support in hopes
 #                     of support Mac OS X 10.4 and earlier.
-# v0.3   2010-11-29 - Morgan Aldridge
+# v0.3   2010-12-07 - Morgan Aldridge
 #                     Correctly handle full volume path which is root volume.
+#                     Now increments filename if filename already exists in
+#                     trash folder (à la Finder).
 # 
 
 # TO DO:
@@ -67,7 +69,34 @@ if [ $# -gt 0 ]; then
 					mkdir $v "$trash"
 				fi
 				# move the file to the trash
-				mv $v "$1" "$trash"
+				if [ ! -e "${trash}$1" ]; then
+					mv $v "$1" "$trash"
+				else
+					# determine if the filename has an extension
+					ext=false
+					case "$1" in
+						*.*) ext=true ;;
+					esac
+
+					# keep incrementing a number to append to the filename to mimic Finder
+					i=1
+					if $ext; then
+						new="${trash}${1%%.*} ${i}.${1##*.}"
+					else
+						new="${trash}$1 $i"
+					fi
+					while [ -e "$new" ]; do
+						((i=$i + 1))
+						if $ext; then
+							new="${trash}${1%%.*} ${i}.${1##*.}"
+						else
+							new="${trash}$1 $i"
+						fi
+					done
+
+					#move the file to the trash with the new name
+					mv $v "$1" "$new"
+				fi
 			fi
 			shift
 		fi
