@@ -1,0 +1,49 @@
+#!/usr/bin/perl -w
+
+# clipcat - https://gist.github.com/705623
+
+use strict;
+use utf8;
+use MacPerl;
+use File::Basename;
+
+my $script = basename($0);
+
+my $file = $ARGV[0];
+my $fileinfo = MacPerl::GetFileInfo($file);
+
+$file = escape($file);
+
+if (!-e $file) {
+  print STDERR "$script: no such file $file.\n"; exit 1;
+} elsif ($fileinfo ne 'clpt') {
+  print STDERR "$script: file $file is not a clipping.\n"; exit 1;
+}
+
+my @resdata = `DeRez -only 'utf8' '$file'`;
+shift(@resdata);
+pop(@resdata); pop(@resdata);
+
+foreach (@resdata) {
+  my $line = $_;
+  chomp $line;
+  $line =~ s{^\t\$"|" +/\*.+\*/$}{}g;
+  my @blobs = split / /, $line;
+  foreach (@blobs) {
+    my $blob = $_;
+        
+    my $hex1 = substr $blob, 0, 2;
+    my $hex2 = substr $blob, 2, 3;
+    
+    print chr(hex($hex1)).chr(hex($hex2));
+  }
+}
+
+exit 0;
+
+sub escape { # http://cl.ly/3JGN -- should work to escape the filename
+  my $text = shift;               # for handing to DeRez
+  $text =~ s/\\/\\\\/g;
+  $text =~ s/'/\\'/g;
+  return $text;
+}
