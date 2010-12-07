@@ -7,7 +7,7 @@
 #                     Initial version.
 # v0.2   2010-10-24 - Morgan Aldridge
 #                     Minor cleanup. Automatically prepend /Volumes/ to volume name if omitted.
-# v0.3   2010-11-30 - Morgan Aldridge
+# v0.3   2010-12-07 - Morgan Aldridge
 #                     Added "-f" option to force a disk to eject. Now supports ejecting of
 #                     network volumes.
 # 
@@ -61,7 +61,11 @@ if [ $# -gt 0 ]; then
 				if [[ ( $fs_type == "afpfs" ) || ( $fs_type == "smbfs" ) || ( $fs_type == "webdav" ) ]]; then
 					diskutil unmount $f "$vol"
 				else
-					diskutil eject $f "$vol"
+					if $force; then
+						diskutil unmountDisk $f "$vol"
+					else
+						diskutil eject "$vol"
+					fi
 				fi
                         fi
                         shift
