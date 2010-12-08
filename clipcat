@@ -1,6 +1,13 @@
 #!/usr/bin/perl -w
 
-# clipcat - https://gist.github.com/705623
+# 
+# clipcat - Concatenate and print Text Clippings.
+# 
+# v0.1   2010-11-18 - David Kendall <https://gist.github.com/705623>
+#                     Initial version. Used with permission.
+# v0.2   2010-12-08 - Morgan Aldridge <morgant@makkintosshu.com>
+#                     Now concatenates multiple text clippings. Usage instructions.
+# 
 
 use strict;
 use utf8;
@@ -9,37 +16,51 @@ use File::Basename;
 
 my $script = basename($0);
 
-my $file = $ARGV[0];
-my $fileinfo = MacPerl::GetFileInfo($file);
-
-$file = escape($file);
-
-if (!-e $file) {
-  print STDERR "$script: no such file $file.\n"; exit 1;
-} elsif ($fileinfo ne 'clpt') {
-  print STDERR "$script: file $file is not a clipping.\n"; exit 1;
-}
-
-my @resdata = `DeRez -only 'utf8' '$file'`;
-shift(@resdata);
-pop(@resdata); pop(@resdata);
-
-foreach (@resdata) {
-  my $line = $_;
-  chomp $line;
-  $line =~ s{^\t\$"|" +/\*.+\*/$}{}g;
-  my @blobs = split / /, $line;
-  foreach (@blobs) {
-    my $blob = $_;
-        
-    my $hex1 = substr $blob, 0, 2;
-    my $hex2 = substr $blob, 2, 3;
+if ($ARGV[0]) {
+  while ($ARGV[0]) {
+    my $file = $ARGV[0];
+    my $fileinfo = MacPerl::GetFileInfo($file);
     
-    print chr(hex($hex1)).chr(hex($hex2));
+    $file = escape($file);
+    
+    if (!-e $file) {
+      print STDERR "$script: no such file $file.\n"; exit 1;
+    } elsif ($fileinfo ne 'clpt') {
+      print STDERR "$script: file $file is not a clipping.\n"; exit 1;
+   }
+    
+    my @resdata = `DeRez -only 'utf8' '$file'`;
+    shift(@resdata);
+    pop(@resdata); pop(@resdata);
+    
+    foreach (@resdata) {
+      my $line = $_;
+      chomp $line;
+      $line =~ s{^\t\$"|" +/\*.+\*/$}{}g;
+      my @blobs = split / /, $line;
+      foreach (@blobs) {
+        my $blob = $_;
+            
+        my $hex1 = substr $blob, 0, 2;
+        my $hex2 = substr $blob, 2, 3;
+        
+        print chr(hex($hex1)).chr(hex($hex2));
+      }
+    }
+  
+    shift(@ARGV);
   }
+  exit 0;
+} else {
+  print STDERR "$script: No files were specified.\n\n";
+  usage();
+  exit 1;
 }
 
-exit 0;
+sub usage {
+  print "Usage: clipcat [options] file ...\n";
+  print "    -h            print these usage instructions\n";
+}
 
 sub escape { # http://cl.ly/3JGN -- should work to escape the filename
   my $text = shift;               # for handing to DeRez
