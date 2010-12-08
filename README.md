@@ -11,6 +11,10 @@ A small collection of command line tools that I've developed for Mac OS X over t
 TOOLS
 -----
 
+### clipcat
+
+`clipcat` prints and concatenates Mac OS Text Clippings. Submitted by David Kendal <https://gist.github.com/705623>.
+
 ### eject
 
 `eject` ejects a volume and all other volumes on the same disk. A simpler, shorter wrapper of `diskutil`'s various eject/unmount options and allows specifying either a full path in /Volumes or just the volume name.
