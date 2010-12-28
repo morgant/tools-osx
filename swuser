@@ -1,21 +1,61 @@
-#!/bin/sh
+#!/bin/bash
 
 #
-# FUSS - Fast User Switching Suspend
+# swuser - Switch users via Mac OS X's Fast User Switching 
 #
-# A shell script to invoke Fast User Switching (whether it's turned on or not)
-# on a regular basis (primarily to make sure that a Mac OS X server running GUI
-# software requiring a user to be logged into the console is more secure).
+# Originally via Schoun Reagan, but later 
+# http://www.macosxhints.com/article.php?story=20031102031045417
 #
-# [via Schoun Reagan <sr@afp548.com>]
-# 
-# See also (found after-the-fact):
-#  http://www.macosxhints.com/article.php?story=20031102031045417
-#
-# VERSION HISTORY
-#
-# v0.1		2006/10/18		Morgan Aldridge <morgant@makkintosshu.com>
-#			Initial release
+# v0.1   2006-10-18 - Morgan Aldridge <morgant@makkintosshu.com>
+#                     Initial release
+# v0.2   2010-12-27 - Morgan Aldridge
+#                     Renamed to 'swuser', added usage instructions, options
+#                     for switching to login window, user by name, or user by ID.
 #
 
-/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend
+# global variables
+user=$(whoami)
+id=$(id -u $user)
+cgsession="/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession"
+
+# print usage instructions (help)
+function usage() {
+	printf "Usage: swuser [options [username|useried]]\n"
+	printf "  -h            print these usage instructions\n"
+	printf "  -l            switch to the login window\n"
+	printf "  -n            switch to a different user by user name\n"
+	printf "  -u            switch to a different user by user id\n"
+}
+
+# exit with an error if being run from screen
+if [ "$STY" != "" ]; then
+	printf "Sorry, swuser doesn't work from within screen. I know, I hate it too!\n"
+	exit 1;
+fi
+
+# see if any arguments were passed in
+if [ $# -gt 0 ]; then
+	# if so, step through them all and process them
+	while [ $# -gt 0 ]; do
+		# see if the user requested help
+		if [ "$1" = "-h" ]; then
+			usage
+			exit;
+		# handle switch to login window
+		elif [ "$1" = "-l" ]; then
+			"$cgsession" -suspend
+			shift
+		# handle switching to another user by name
+		elif [ "$1" = "-n" ]; then
+			shift
+			"$cgsession" -switchToUserID $(id -u "$1")
+			shift
+		# handle switch to another user by id
+		elif [ "$1" = "-u" ]; then
+			shift
+			"$cgsession" -switchToUserID $1
+			shift
+		fi
+	done
+fi
+
