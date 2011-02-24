@@ -27,6 +27,13 @@ function usage() {
 	printf "  -u            switch to a different user by user id\n"
 }
 
+function check_id() {
+	if (( $1 == $2 )); then
+		printf "Sorry, you can't switch to yourself.\n"
+		exit 1;
+	fi
+}
+
 # exit with an error if being run from screen
 if [ "$STY" != "" ]; then
 	printf "Sorry, swuser doesn't work from within screen. I know, I hate it too!\n"
@@ -48,14 +55,20 @@ if [ $# -gt 0 ]; then
 		# handle switching to another user by name
 		elif [ "$1" = "-n" ]; then
 			shift
+			new_id=$(id -u "$1")
+			check_id $id $new_id
 			"$cgsession" -switchToUserID $(id -u "$1")
 			shift
 		# handle switch to another user by id
 		elif [ "$1" = "-u" ]; then
 			shift
+			check_id $id $1
 			"$cgsession" -switchToUserID $1
 			shift
 		fi
 	done
+else
+	printf "No switch user action specified.\n\n"
+	usage
 fi
 
