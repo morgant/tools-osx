@@ -16,12 +16,9 @@
 #                     Correctly handle full volume path which is root volume.
 #                     Now increments filename if filename already exists in
 #                     trash folder (à la Finder).
+# v0.4   2011-03-   - Morgan Aldridge
+#                     Option to list trash contents w/disk usage total.
 # 
-
-# TO DO:
-# - Don't use .Trashes folder on root volume (check for symlink of volume to /)
-# - Append an incremented number to the end of a filename, but before the file
-#   extension, if a file with the same name already exists.
 
 # global variables
 verbose=false
@@ -35,6 +32,7 @@ function usage() {
 	printf "Usage: trash [options] file ...\n"
 	printf "  -v		verbose output\n"
 	printf "  -h		print these usage instructions\n"
+	printf "  -l            list trash contents\n"
 }
 
 # see if any arguments were passed in
@@ -50,6 +48,44 @@ if [ $# -gt 0 ]; then
 			shift
 			help=true
 			usage
+			exit
+		# see if the user requested a list of trash contents
+		elif [ "$1" = "-l" ]; then
+			num_volumes=0
+			total_blocks=0
+			# list file contents & calculate size for user's .Trash folder
+			if find "/Users/${user}/.Trash" -depth 1 ! -depth 0; then
+				num_volumes=$(( $num_volumes + 1 ))
+				blocks=$(du -cs "/Users/${user}/.Trash" | tail -n 1 | cut -f 1)
+				total_blocks=$(( $total_blocks + $blocks ))
+			fi
+			# list file contents & calculate size for volume-specific .Trashes folders
+			for file in /Volumes/*; do
+				if [ -d "$file" ]; then
+					folder="${file}/.Trashes/${uid}"
+					if [ -d "${folder}" ]; then
+						if find "$folder" -depth 1 ! -depth 0; then
+							num_volumes=$(( $num_volumes + 1 ))
+							blocks=$(du -cs "$folder" | tail -n 1 | cut -f 1)
+							total_blocks=$(( $total_blocks + $blocks ))
+						fi
+					fi
+				fi
+			done
+			# convert blocks to human readable size
+			size=0
+			if (( $total_blocks >= 2097152 )); then
+				size=$(bc <<< "scale=2; $total_blocks / 2097152")
+				size="${size}GB"
+			elif (( $total_blocks >= 2048 )); then
+				size=$(bc <<< "scale=2; $total_blocks / 2048")
+				size="${size}MB"
+			else
+				size=$(bc <<< "scale=2; $total_blocks / 2")
+				size="${size}K"
+			fi
+			printf "%s across %s volume(s).\n" "$size" $num_volumes
+			exit
 		# handle remaining arguments as if they were files
 		else
 			# don't bother doing anything if the user requested help
