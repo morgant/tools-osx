@@ -22,7 +22,6 @@
 
 # global variables
 verbose=false
-help=false
 user=$(whoami)
 uid=$(id -u "$user")
 v=''
@@ -46,7 +45,6 @@ if [ $# -gt 0 ]; then
 		# see if the user requested help
 		elif [ "$1" = "-h" ]; then
 			shift
-			help=true
 			usage
 			exit
 		# see if the user requested a list of trash contents
@@ -88,51 +86,48 @@ if [ $# -gt 0 ]; then
 			exit
 		# handle remaining arguments as if they were files
 		else
-			# don't bother doing anything if the user requested help
-			if ! $help; then
-				#printf "argument: '%s'\n" $1
-				#printf "destination: '%s'\n" $TRASH
-				if $verbose; then v="-v"; fi
-				# determine whether we should be putting this in a volume-specific .Trashes or user's .Trash
-				IFS=/ read -r -d '' _ _ vol _ <<< "$1"
-				if [[ ("${1:0:9}" == "/Volumes/") && (-n "$vol") && ($(readlink "/Volumes/$vol") != "/") ]]; then
-					trash="/Volumes/${vol}/.Trashes/${uid}/"
+			#printf "argument: '%s'\n" $1
+			#printf "destination: '%s'\n" $TRASH
+			if $verbose; then v="-v"; fi
+			# determine whether we should be putting this in a volume-specific .Trashes or user's .Trash
+			IFS=/ read -r -d '' _ _ vol _ <<< "$1"
+			if [[ ("${1:0:9}" == "/Volumes/") && (-n "$vol") && ($(readlink "/Volumes/$vol") != "/") ]]; then
+				trash="/Volumes/${vol}/.Trashes/${uid}/"
+			else
+				trash="/Users/${user}/.Trash/"
+			fi
+			# create the trash folder if necessary
+			if [ ! -d "$trash" ]; then
+				mkdir $v "$trash"
+			fi
+			# move the file to the trash
+			if [ ! -e "${trash}$1" ]; then
+				mv $v "$1" "$trash"
+			else
+				# determine if the filename has an extension
+				ext=false
+				case "$1" in
+					*.*) ext=true ;;
+				esac
+				
+				# keep incrementing a number to append to the filename to mimic Finder
+				i=1
+				if $ext; then
+					new="${trash}${1%%.*} ${i}.${1##*.}"
 				else
-					trash="/Users/${user}/.Trash/"
+					new="${trash}$1 $i"
 				fi
-				# create the trash folder if necessary
-				if [ ! -d "$trash" ]; then
-					mkdir $v "$trash"
-				fi
-				# move the file to the trash
-				if [ ! -e "${trash}$1" ]; then
-					mv $v "$1" "$trash"
-				else
-					# determine if the filename has an extension
-					ext=false
-					case "$1" in
-						*.*) ext=true ;;
-					esac
-
-					# keep incrementing a number to append to the filename to mimic Finder
-					i=1
+				while [ -e "$new" ]; do
+					((i=$i + 1))
 					if $ext; then
 						new="${trash}${1%%.*} ${i}.${1##*.}"
 					else
 						new="${trash}$1 $i"
 					fi
-					while [ -e "$new" ]; do
-						((i=$i + 1))
-						if $ext; then
-							new="${trash}${1%%.*} ${i}.${1##*.}"
-						else
-							new="${trash}$1 $i"
-						fi
-					done
-
-					#move the file to the trash with the new name
-					mv $v "$1" "$new"
-				fi
+				done
+				
+				#move the file to the trash with the new name
+				mv $v "$1" "$new"
 			fi
 			shift
 		fi
