@@ -23,7 +23,7 @@ help=false
 # print usage instructions (help)
 function usage() {
 	printf "Usage: eject [options] volume ...\n"
-	printf "  -f            force volume to be ejected, even if files/directories are open"
+	printf "  -f            force volume to be ejected, even if files/directories are open\n"
 	printf "  -v		verbose output\n"
 	printf "  -h		print these usage instructions\n"
 }
