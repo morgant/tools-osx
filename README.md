@@ -25,7 +25,7 @@ TOOLS
 
 ### trash
 
-`trash` allows trashing of files instead of tempting fate with `rm`. Correctly handles trashing files on other volumes and allows listing of trash contents w/disk usage summary.
+`trash` allows trashing of files instead of tempting fate with `rm`. Correctly handles trashing files on other volumes, can list trash contents w/disk usage summary, and empty trash w/confirmation.
 
 INSTALLATION
 ------------

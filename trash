@@ -17,7 +17,8 @@
 #                     Now increments filename if filename already exists in
 #                     trash folder (à la Finder).
 # v0.4   2011-03-   - Morgan Aldridge
-#                     Option to list trash contents w/disk usage total.
+#                     Option to list trash contents w/disk usage total. Allows
+#                     emptying of trash w/confirmation.
 # 
 
 # global variables
@@ -32,6 +33,7 @@ function usage() {
 	printf "  -v		verbose output\n"
 	printf "  -h		print these usage instructions\n"
 	printf "  -l            list trash contents\n"
+	printf "  -e            empty trash contents\n"
 }
 
 # see if any arguments were passed in
@@ -49,6 +51,7 @@ if [ $# -gt 0 ]; then
 			exit
 		# see if the user requested a list of trash contents
 		elif [ "$1" = "-l" ]; then
+			shift
 			num_volumes=0
 			total_blocks=0
 			# list file contents & calculate size for user's .Trash folder
@@ -83,6 +86,29 @@ if [ $# -gt 0 ]; then
 				size="${size}K"
 			fi
 			printf "%s across %s volume(s).\n" "$size" $num_volumes
+			exit
+		# see if the user requested to empty the trash contents
+		elif [ "$1" = "-e" ]; then
+			shift
+			if $verbose; then v="-v"; fi
+			# confirm that the user wants to empty the trash
+			printf "Are you sure you want to empty the trash? "
+			read confirm
+			if [ "$confirm" = "y" ]; then
+				printf "Emptying trash...\n"
+				# delete the contents of user's .Trash folder
+				find "/Users/${user}/.Trash" -depth 1 ! -depth 0 -exec rm "$v" -r {} + 
+				# delete the contents of the volume-specific .Trashes folders
+				for file in /Volumes/*; do
+					if [ -d "$file" ]; then
+						folder="${file}/.Trashes/${uid}"
+						if [ -d "$folder" ]; then
+							find "$folder" -depth 1 ! -depth 0 -exec rm "$v" -r {} + 
+						fi
+					fi
+				done
+				printf "Done.\n"
+			fi
 			exit
 		# handle remaining arguments as if they were files
 		else
