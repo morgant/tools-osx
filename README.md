@@ -37,3 +37,10 @@ I'd suggest installing these tools in `/usr/local/bin/` as follows:
 3. Run `sudo install -b clipcat eject swuser trash /usr/local/bin/` to install the `clipcat`, `eject`, `swuser` and `trash` tools into `/usr/local/bin/` (Note: if you do not want to install all of the tools, only list the ones you want to install).
 4. Make sure to add `/usr/local/bin/` to your path. If you're using the default `bash` shell, create and/or edit `~/.bash_profile` and add the following line: `export PATH=$PATH:/usr/local/bin`
 
+OTHER TOOLS
+-----------
+
+Looking for other Mac OS X-specific command line tools to complement these? Check out the following:
+
+* [`appswitch` & `launch`](http://sabi.net/nriley/software/) by Nicholas Riley
+* [`iloc`](http://derailer.org/iloc/) by Nate Weaver
