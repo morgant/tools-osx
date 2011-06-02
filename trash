@@ -16,7 +16,7 @@
 #                     Correctly handle full volume path which is root volume.
 #                     Now increments filename if filename already exists in
 #                     trash folder (à la Finder).
-# v0.4   2011-03-   - Morgan Aldridge
+# v0.4   2011-06-02 - Morgan Aldridge
 #                     Option to list trash contents w/disk usage total. Allows
 #                     emptying of trash w/confirmation, incl. secure empty.
 # 
