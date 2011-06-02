@@ -97,13 +97,13 @@ if [ $# -gt 0 ]; then
 			if [ "$confirm" = "y" ]; then
 				printf "Emptying trash...\n"
 				# delete the contents of user's .Trash folder
-				find "/Users/${user}/.Trash" -depth 1 ! -depth 0 -exec rm "$v" -r {} + 
+				find "/Users/${user}/.Trash" -depth 1 ! -depth 0 -print0 | xargs -0 rm $v -r
 				# delete the contents of the volume-specific .Trashes folders
 				for file in /Volumes/*; do
 					if [ -d "$file" ]; then
 						folder="${file}/.Trashes/${uid}"
 						if [ -d "$folder" ]; then
-							find "$folder" -depth 1 ! -depth 0 -exec rm "$v" -r {} + 
+							find "$folder" -depth 1 ! -depth 0 -print0 | xargs -0 rm $v -r
 						fi
 					fi
 				done
