@@ -27,6 +27,10 @@ TOOLS
 
 `trash` allows trashing of files instead of tempting fate with `rm`. Correctly handles trashing files on other volumes, can list trash contents w/disk usage summary, and empty trash w/confirmation.
 
+### with
+
+`with` sets the application with which specified documents will be opened. It can even change and open in one fell swoop. Submitted by David Kendal.
+
 INSTALLATION
 ------------
 
@@ -34,7 +38,7 @@ I'd suggest installing these tools in `/usr/local/bin/` as follows:
 
 1. `cd` into the directory containing the aforementioned tools.
 2. Run `sudo mkdir -p /usr/local/bin/` to make the `/usr/local/bin/` directory, if it doesn't already exist.
-3. Run `sudo install -b clipcat eject swuser trash /usr/local/bin/` to install the `clipcat`, `eject`, `swuser` and `trash` tools into `/usr/local/bin/` (Note: if you do not want to install all of the tools, only list the ones you want to install).
+3. Run `sudo install -b clipcat eject swuser trash with /usr/local/bin/` to install the `clipcat`, `eject`, `swuser`, `trash` and `with` tools into `/usr/local/bin/` (Note: if you do not want to install all of the tools, only list the ones you want to install).
 4. Make sure to add `/usr/local/bin/` to your path. If you're using the default `bash` shell, create and/or edit `~/.bash_profile` and add the following line: `export PATH=$PATH:/usr/local/bin`
 
 OTHER TOOLS
