@@ -1,0 +1,104 @@
+#!/usr/bin/perl -w
+
+# setapp: set the application which will be used to open files
+#         by Launch Services and the Finder.
+# 
+# 1.0     2011-06-08
+#         Initial version.
+
+use strict;
+use Getopt::Long;
+use File::Basename;
+use Cwd qw(realpath);
+use Mac::Processes;
+
+my $script = basename($0);
+
+my $creator = '';
+my $path = '';
+my $bundle = '';
+my $app = '';
+my $help;
+my $open;
+
+if (!$ARGV[0]) {
+  $help = 1;
+}
+
+GetOptions("creator|c=s" => \$creator,
+           "path|p=s"    => \$path,
+           "bundle|i=s"  => \$bundle,
+           "app|a=s"     => \$app,
+           "help|h"      => \$help,
+           "open|o"      => \$open);
+
+if ($help) {
+  print <<EOF;
+Usage: $script [-c|--creator creator] [-i|--bundle bundle-id] [-p|--path path] [-a|--app app-name] [-o|--open] file [file2 file3 ...]
+
+Sets the application which will be used to open files.
+Use --open or -o to open the files with the new application immediately.
+
+Examples:
+	$script -c 'R*ch' index.html
+	$script -i com.panic.coda index.html
+	$script -a 'Safari' index.html
+	$script -p '/Applications/BBEdit.app' index.html
+	ls | xargs $script -c 'R*ch'
+
+EOF
+  exit 0;
+}
+
+my $prefix = "\0\0\0";
+
+if (!$path) {
+  $app .= '.app' if ($app and !($app =~ /\.app$/));
+  $path = LSFindApplicationForInfo($creator, $bundle, $app);
+  if (!$path) {
+    print STDERR $script.": No application specified or none found for criteria.\n";
+    exit 1;
+  }
+}
+
+$path = realpath($path);
+$prefix .= chr(length($path));
+my $string = $prefix.$path;
+$string .= "\0" x (1024 - length($path));
+
+my $resource = "data 'usro' (0) {\n";
+
+my @chunks = ( $string =~ m/.{0,16}/g );
+foreach (@chunks) {
+  my $chunk = $_;
+  my $line = "\t\$\"";
+  my @subchunks = ( $chunk =~ m/.{2}/g );
+  foreach (@subchunks) {
+    my $chr1 = substr $_, 0, 1;
+    my $chr2 = substr $_, 1, 1;
+    $line .= sprintf "%02x%02x ", ord($chr1), ord($chr2);
+  }
+  chop $line; # fix the trailing space.
+  $line .= "\"\n";
+  $resource .= $line;
+}
+
+$resource = substr $resource, 0, -4; # fix a mysterious empty line.
+$resource .= "};\n\n";
+
+system 'touch', $ENV{"HOME"}.'/._tmp_res';
+open RES, '>', $ENV{"HOME"}.'/._tmp_res' or die "Problem opening resource fork file: $!";
+print RES $resource;
+close RES;
+
+foreach (@ARGV) {
+  my $file = realpath($_);
+  if (!-e $file) {
+    print STDERR $script.": file not found: $file\n";
+  }
+  
+  system 'Rez', $ENV{"HOME"}.'/._tmp_res', '-a', '-o', $file;
+  system 'open', $file if $open;
+}
+
+system 'rm', $ENV{"HOME"}.'/._tmp_res';
