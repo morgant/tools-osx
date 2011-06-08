@@ -1,10 +1,12 @@
 #!/usr/bin/perl -w
 
-# setapp: set the application which will be used to open files
-#         by Launch Services and the Finder.
 # 
-# 1.0     2011-06-08
-#         Initial version.
+# with - Set the application which will be used to open files
+#        by Launch Services and the Finder.
+# 
+# v1.0   2011-06-08 - David Kendal
+#                     Initial version.
+# 
 
 use strict;
 use Getopt::Long;
