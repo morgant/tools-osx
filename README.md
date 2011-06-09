@@ -25,7 +25,7 @@ TOOLS
 
 ### trash
 
-`trash` allows trashing of files instead of tempting fate with `rm`. Correctly handles trashing files on other volumes, can list trash contents w/disk usage summary, and empty trash w/confirmation.
+`trash` allows trashing of files instead of tempting fate with `rm`. Correctly handles trashing files on other volumes, uses the same filename renaming scheme as Finder for duplicate file names, can list trash contents w/disk usage summary, and empty trash (including securely) w/confirmation. Does not require Finder to be running.
 
 ### with
 
