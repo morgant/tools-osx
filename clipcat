@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl5.8.9 -w
 
 # 
 # clipcat - Concatenate and print Text Clippings.
