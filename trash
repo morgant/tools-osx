@@ -19,12 +19,16 @@
 # v0.4   2011-06-02 - Morgan Aldridge
 #                     Option to list trash contents w/disk usage total. Allows
 #                     emptying of trash w/confirmation, incl. secure empty.
+# v0.5   2011-06-   - Morgan Aldridge
+#                     Support for trashing/emptying using Finder via AppleScript,
+#                     when available.
 # 
 
 # global variables
 verbose=false
 user=$(whoami)
 uid=$(id -u "$user")
+finder_pid=$(ps -u "$user" | grep Finder.app | grep -v grep | awk '{print $1}')
 v=''
 
 # print usage instructions (help)
@@ -139,45 +143,64 @@ if [ $# -gt 0 ]; then
 			#printf "argument: '%s'\n" $1
 			#printf "destination: '%s'\n" $TRASH
 			if $verbose; then v="-v"; fi
-			# determine whether we should be putting this in a volume-specific .Trashes or user's .Trash
-			IFS=/ read -r -d '' _ _ vol _ <<< "$1"
-			if [[ ("${1:0:9}" == "/Volumes/") && (-n "$vol") && ($(readlink "/Volumes/$vol") != "/") ]]; then
-				trash="/Volumes/${vol}/.Trashes/${uid}/"
-			else
-				trash="/Users/${user}/.Trash/"
-			fi
-			# create the trash folder if necessary
-			if [ ! -d "$trash" ]; then
-				mkdir $v "$trash"
-			fi
-			# move the file to the trash
-			if [ ! -e "${trash}$1" ]; then
-				mv $v "$1" "$trash"
-			else
-				# determine if the filename has an extension
-				ext=false
-				case "$1" in
-					*.*) ext=true ;;
-				esac
-				
-				# keep incrementing a number to append to the filename to mimic Finder
-				i=1
-				if $ext; then
-					new="${trash}${1%%.*} ${i}.${1##*.}"
+			
+			# determine if we'll tell Finder to trash the file via AppleScript (very easy, plus free undo
+			# support, but Finder must be running for the user and is DOES NOT work from within `screen`)
+			if [[ ($finder_pid -gt 1) && ("$STY" == "") ]]; then
+				# determine whether we have an absolute path name to the file or not
+				if [ "${1:0:1}" = "/" ]; then
+					file="$1"
 				else
-					new="${trash}$1 $i"
+					file="$(pwd)/$1"
 				fi
-				while [ -e "$new" ]; do
-					((i=$i + 1))
+				if $verbose; then printf "Telling Finder to trash '%s'... " "$file"; fi
+				if /usr/bin/osascript -e "tell application \"Finder\" to delete POSIX file \"$file\"" ; then
+					if $verbose; then printf "Done.\n"; fi
+				else
+					if $verbose; then printf "ERROR!\n"; fi
+				fi
+			# Finder isn't running for this user, so don't rely on it (we'll do all the dirty work ourselves)
+			else
+				# determine whether we should be putting this in a volume-specific .Trashes or user's .Trash
+				IFS=/ read -r -d '' _ _ vol _ <<< "$1"
+				if [[ ("${1:0:9}" == "/Volumes/") && (-n "$vol") && ($(readlink "/Volumes/$vol") != "/") ]]; then
+					trash="/Volumes/${vol}/.Trashes/${uid}/"
+				else
+					trash="/Users/${user}/.Trash/"
+				fi
+				# create the trash folder if necessary
+				if [ ! -d "$trash" ]; then
+					mkdir $v "$trash"
+				fi
+				# move the file to the trash
+				if [ ! -e "${trash}$1" ]; then
+					mv $v "$1" "$trash"
+				else
+					# determine if the filename has an extension
+					ext=false
+					case "$1" in
+						*.*) ext=true ;;
+					esac
+					
+					# keep incrementing a number to append to the filename to mimic Finder
+					i=1
 					if $ext; then
 						new="${trash}${1%%.*} ${i}.${1##*.}"
 					else
 						new="${trash}$1 $i"
 					fi
-				done
-				
-				#move the file to the trash with the new name
-				mv $v "$1" "$new"
+					while [ -e "$new" ]; do
+						((i=$i + 1))
+						if $ext; then
+							new="${trash}${1%%.*} ${i}.${1##*.}"
+						else
+							new="${trash}$1 $i"
+						fi
+					done
+					
+					#move the file to the trash with the new name
+					mv $v "$1" "$new"
+				fi
 			fi
 			shift
 		fi
