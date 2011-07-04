@@ -41,6 +41,16 @@ function usage() {
 	printf "  -s		secure empty trash contents\n"
 }
 
+# determine whether we can script the Finder or not
+function have_scriptable_finder() {
+	# We must have a valid PID for Finder, plus we cannot be in `screen` (another thing that's broken)
+	if [[ ($finder_pid -gt 1) && ("$STY" == "") ]]; then
+		true
+	else
+		false
+	fi
+}
+
 # see if any arguments were passed in
 if [ $# -gt 0 ]; then
 	# if so, step through them all and process them
@@ -146,7 +156,7 @@ if [ $# -gt 0 ]; then
 			
 			# determine if we'll tell Finder to trash the file via AppleScript (very easy, plus free undo
 			# support, but Finder must be running for the user and is DOES NOT work from within `screen`)
-			if [[ ($finder_pid -gt 1) && ("$STY" == "") ]]; then
+			if have_scriptable_finder; then
 				# determine whether we have an absolute path name to the file or not
 				if [ "${1:0:1}" = "/" ]; then
 					file="$1"
@@ -159,7 +169,7 @@ if [ $# -gt 0 ]; then
 				else
 					if $verbose; then printf "ERROR!\n"; fi
 				fi
-			# Finder isn't running for this user, so don't rely on it (we'll do all the dirty work ourselves)
+			# Finder isn't available for this user, so don't rely on it (we'll do all the dirty work ourselves)
 			else
 				# determine whether we should be putting this in a volume-specific .Trashes or user's .Trash
 				IFS=/ read -r -d '' _ _ vol _ <<< "$1"
