@@ -15,6 +15,10 @@ TOOLS
 
 `clipcat` prints and concatenates Mac OS Text Clippings. Submitted by David Kendal <https://gist.github.com/705623>.
 
+### dict
+
+`dict` performs a look-up in Mac OS X's included dictionary. Note: unlike the other scripts provided, this one requires that you have MacRuby installed <http://macruby.org/>. 
+
 ### eject
 
 `eject` ejects a volume or network volume and all other volumes on the same local device. A shorter, simpler, smarter wrapper of `diskutil`'s various eject/unmount options and allows specifying either a full path in /Volumes or just the volume name.
@@ -34,12 +38,8 @@ TOOLS
 INSTALLATION
 ------------
 
-I'd suggest installing these tools in `/usr/local/bin/` as follows:
-
-1. `cd` into the directory containing the aforementioned tools.
-2. Run `sudo mkdir -p /usr/local/bin/` to make the `/usr/local/bin/` directory, if it doesn't already exist.
-3. Run `sudo install -b clipcat eject swuser trash with /usr/local/bin/` to install the `clipcat`, `eject`, `swuser`, `trash` and `with` tools into `/usr/local/bin/` (Note: if you do not want to install all of the tools, only list the ones you want to install).
-4. Make sure to add `/usr/local/bin/` to your path. If you're using the default `bash` shell, create and/or edit `~/.bash_profile` and add the following line: `export PATH=$PATH:/usr/local/bin`
+1. Download and extract the tools.
+2. Run `rake install` -- this will require you to be an administrator.
 
 OTHER TOOLS
 -----------
