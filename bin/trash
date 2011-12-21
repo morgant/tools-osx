@@ -187,7 +187,8 @@ if [ $# -gt 0 ]; then
 				if [ "${1:0:1}" = "/" ]; then
 					file="$1"
 				else
-					file="$(pwd)/$1"
+					# expand relative to absolute path
+					file=`ruby -e 'puts File.expand_path ARGV[0]' "$1"`
 				fi
 				if $verbose; then printf "Telling Finder to trash '%s'... " "$file"; fi
 				if /usr/bin/osascript -e "tell application \"Finder\" to delete POSIX file \"$file\"" ; then
