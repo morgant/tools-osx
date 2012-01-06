@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env 32bitSafePerl 
 
 # 
 # with - Set the application which will be used to open files
