@@ -17,11 +17,15 @@ TOOLS
 
 ### dict
 
-`dict` performs a look-up in Mac OS X's included dictionary. Note: unlike the other scripts provided, this one requires that you have MacRuby installed <http://macruby.org/>. 
+`dict` performs a look-up in Mac OS X's included dictionary. Note: unlike the other scripts provided, this one requires that you have MacRuby installed <http://macruby.org/>. Submitted by David Kendal.
 
 ### eject
 
 `eject` ejects a volume or network volume and all other volumes on the same local device. A shorter, simpler, smarter wrapper of `diskutil`'s various eject/unmount options and allows specifying either a full path in /Volumes or just the volume name.
+
+### ql
+
+`ql` opens files with Mac OS X's Quick Look feature.
 
 ### swuser
 
