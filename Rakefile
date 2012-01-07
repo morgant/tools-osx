@@ -13,7 +13,7 @@ end
 
 task :install do
   sudo
-  
+    
   Dir.mkdir '/usr/local/bin/' if not File.exist? '/usr/local/bin/'
   system 'install -b '+Dir.nonhidden_entries('./bin/').map {|x| './bin/'+x}.join(' ')+' /usr/local/bin/'
 end
