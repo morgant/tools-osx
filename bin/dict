@@ -1,0 +1,12 @@
+#!/usr/bin/env macruby
+
+# dict -- make a lookup in Mac OS X's included dictionary.
+# 
+# v1.0    2011-08-01  David Kendal
+#                     Initial version.
+
+framework '/System/Library/Frameworks/CoreServices.framework/Frameworks/DictionaryServices.framework'
+
+word = ARGV[0]
+wlen = DCSGetTermRangeInString(nil, word, 0);
+puts DCSCopyTextDefinition(nil, word, wlen)

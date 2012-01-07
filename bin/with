@@ -8,6 +8,7 @@
 #                     Initial version.
 # 
 
+use warnings;
 use strict;
 use Getopt::Long;
 use File::Basename;
