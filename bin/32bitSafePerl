@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# 
+# 32bitSafePerl - A wrapper for Perl scripts which will force them to be run by
+#                 the 32-bit Perl binary since MacPerl is not 64-bit compatible.
+#                 It's intelligent enough to find the appropriate version
+#                 depending on the version of Mac OS X, regardless of whether
+#                 "Prefer-32-Bit" has been set, up until Mac OS X 10.7 Lion
+#                 which no longer has a 32-bit Perl binary.
+# 
+#                 Use '#!/usr/bin/env 32bitSafePerl'.
+# 
+# v0.1   2012-01-06 - Morgan Aldridge <morgant@makkintosshu.com>
+#                     Initial version.
+# 
+
 # get the Mac OS X version
 version_major=$(sw_vers -productVersion | cut -d . -f 2)
 #version_minor=$(sw_vers -productVersion | cut -d . -f 3)

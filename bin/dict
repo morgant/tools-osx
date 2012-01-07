@@ -1,9 +1,11 @@
 #!/usr/bin/env macruby
 
-# dict -- make a lookup in Mac OS X's included dictionary.
 # 
-# v1.0    2011-08-01  David Kendal
+# dict - Make a lookup in Mac OS X's included dictionary. Requires MacRuby.
+# 
+# v1.0   2011-08-01 - David Kendal
 #                     Initial version.
+# 
 
 framework '/System/Library/Frameworks/CoreServices.framework/Frameworks/DictionaryServices.framework'
 
