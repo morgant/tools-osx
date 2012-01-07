@@ -9,6 +9,7 @@
 #                     Now concatenates multiple text clippings. Usage instructions.
 # 
 
+use warnings;
 use strict;
 use utf8;
 use MacPerl;
