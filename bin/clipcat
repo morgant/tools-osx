@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#!/usr/bin/env perl -w
-=======
 #!/usr/bin/env 32bitSafePerl
->>>>>>> upstream/master
 
 # 
 # clipcat - Concatenate and print Text Clippings.
