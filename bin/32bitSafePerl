@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# get the Mac OS X version
+version_major=$(sw_vers -productVersion | cut -d . -f 2)
+#version_minor=$(sw_vers -productVersion | cut -d . -f 3)
+
+interpreter=''
+# 10.7.x now has no 32-bit only version of Perl included, so we
+# need to set Perl's prefer-32-Bit default
+if [ $version_major -eq 7 ]; then
+	if [ "$(defaults read com.apple.versioner.perl Prefer-32-Bit)" != "1" ]; then
+		printf "Mac OS X 10.7.x Lion requires that we set Perl's 'Prefer-32-Bit' default for %s to work properly.\n" "$1"
+		printf "Shall we do that for you (y/n)?"
+		read confirm
+		if [ "$confirm" = "y" ]; then
+			defaults write com.apple.versioner.perl Prefer-32-Bit -bool true
+			printf "Done. You can change this back at any time by running 'defaults write com.apple.versioner.perl Prefer-32-Bit -bool false'.\n"
+		else
+			printf "No change made. Exiting.\n"
+			exit 1
+		fi
+	fi
+	interpreter='/usr/bin/perl'
+# 10.6.x should use Perl 5.8.9
+elif [ $version_major -eq 6 ]; then
+	interpreter='/usr/bin/perl5.8.9'
+# 10.5.x should use Perl 5.8.8
+elif [ $version_major -eq 5 ]; then
+	interpreter='/usr/bin/perl5.8.8'
+# 10.4.x and earlier can use just use 'perl'
+elif [ $version_major -le 4 ]; then
+	interpreter='/usr/bin/perl'
+fi
+
+# Perl tries to be helpful and always honors the shebang/hashbang in the script
+# it executes, but that causes an infinite loop due to what we're doing. So we
+# have to strip out the shebang/hashbang before sending to Perl. To do that,
+# because Perl can't accept command line arguments when running a script from
+# stdin, we must write the script, sans the shebang, to a tmp file.
+
+# determine the command name & shift it off the stack of arguments
+full_command="$1"
+command="${full_command##*/}"
+shift
+
+# create the tmp Perl script and fill it with the original script, sans the
+# shebang/hashbang
+mkdir -p "/tmp/32bitSafePerl"
+touch "/tmp/32bitSafePerl/${command}.tmp.pl"
+chmod 755 "/tmp/32bitSafePerl/${command}.tmp.pl"
+tail -n+2 "$full_command" > "/tmp/32bitSafePerl/${command}.tmp.pl"
+
+# run the new temp Perl script through the appropriate version of Perl w/the
+# command line arguments
+"$interpreter" "/tmp/32bitSafePerl/${command}.tmp.pl" "$@"
+
+# clean up the temp Perl script
+rm "/tmp/32bitSafePerl/${command}.tmp.pl"

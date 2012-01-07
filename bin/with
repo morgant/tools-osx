@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env perl -w
+=======
+#!/usr/bin/env 32bitSafePerl 
+>>>>>>> upstream/master
 
 # 
 # with - Set the application which will be used to open files
