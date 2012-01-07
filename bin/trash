@@ -22,6 +22,10 @@
 # v0.5   2011-07-04 - Morgan Aldridge
 #                     Support for trashing/emptying using Finder via AppleScript,
 #                     when available.
+# v0.5.1 2011-12-20 - Matt Brictson
+#                     Fixed bug where cwd would get trashed instead of specified
+#                     file/path if it contained a relative path when trashing
+#                     using Finder via AppleScript.
 # 
 
 # global variables
