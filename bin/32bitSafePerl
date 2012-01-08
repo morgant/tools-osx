@@ -60,13 +60,13 @@ shift
 # create the tmp Perl script and fill it with the original script, sans the
 # shebang/hashbang
 mkdir -p "/tmp/32bitSafePerl"
-touch "/tmp/32bitSafePerl/${command}.tmp.pl"
-chmod 755 "/tmp/32bitSafePerl/${command}.tmp.pl"
-tail -n+2 "$full_command" > "/tmp/32bitSafePerl/${command}.tmp.pl"
+touch "/tmp/32bitSafePerl/${command}"
+chmod 755 "/tmp/32bitSafePerl/${command}"
+tail -n+2 "$full_command" > "/tmp/32bitSafePerl/${command}"
 
 # run the new temp Perl script through the appropriate version of Perl w/the
 # command line arguments
-"$interpreter" "/tmp/32bitSafePerl/${command}.tmp.pl" "$@"
+"$interpreter" "/tmp/32bitSafePerl/${command}" "$@"
 
 # clean up the temp Perl script
-rm "/tmp/32bitSafePerl/${command}.tmp.pl"
+rm "/tmp/32bitSafePerl/${command}"
