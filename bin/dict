@@ -5,10 +5,29 @@
 # 
 # v1.0   2011-08-01 - David Kendal
 #                     Initial version.
-# 
+# v1.1   2012-01-08 - David Kendal
+#                     Adds multiple word lookups and a vaguely-interactive mode.
+#
 
 framework '/System/Library/Frameworks/CoreServices.framework/Frameworks/DictionaryServices.framework'
 
-word = ARGV[0]
-wlen = DCSGetTermRangeInString(nil, word, 0);
-puts DCSCopyTextDefinition(nil, word, wlen)
+def definition word
+  wlen = DCSGetTermRangeInString nil, word, 0
+  if word.strip.length == 0
+     # do nothing
+  elsif wlen.location == -1
+    STDERR.puts "#{File.basename $0}: no definition for #{word}"
+  else
+    puts DCSCopyTextDefinition nil, word, wlen
+  end
+end
+
+if ARGV.empty?
+  while gets
+    definition $_
+  end
+else
+  ARGV.each do |word|
+    definition word
+  end
+end
