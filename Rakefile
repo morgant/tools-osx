@@ -6,7 +6,7 @@ class Dir
 end
 
 task :default do
-  mkdir './bin' unless Dir.exist? './bin'
+  mkdir './bin' unless File.directory? './bin'
   unless File.exist? './bin/dict'
 	mrc = `which macrubyc`.strip # mrc == macruby compiler
 	if mrc.empty?
