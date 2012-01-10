@@ -43,7 +43,8 @@ INSTALLATION
 ------------
 
 1. Download and extract the tools.
-2. Run `rake install` -- this will require you to be an administrator.
+2. Run `rake`.
+3. Run `sudo rake install`. (If you have write permission on `/usr/local/bin`, you don't need to sudo.)
 
 OTHER TOOLS
 -----------
