@@ -53,6 +53,7 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 * [`appswitch` & `launch`](http://sabi.net/nriley/software/) by Nicholas Riley
 * [`asprint`](http://hasseg.org/asprint/), [`icalBuddy`](http://hasseg.org/icalBuddy/), [`setWeblocThumb`](http://hasseg.org/setWeblocThumb/), and [`trash`](http://hasseg.org/trash/) by Ali Rantakari
 * [`iloc`](http://derailer.org/iloc/) by Nate Weaver
+* [`ithief`](http://cachivaches.chauca.net/ithief/) by Israel Chauca Fuentes
 
 SPECIAL THANKS
 --------------
