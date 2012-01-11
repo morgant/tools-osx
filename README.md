@@ -25,11 +25,11 @@ TOOLS
 
 ### ql
 
-`ql` opens files with Mac OS X's Quick Look feature.
+`ql` opens files with Mac OS X's [Quick Look](http://www.apple.com/findouthow/mac/#quicklook) feature.
 
 ### swuser
 
-`swuser` switches users using Mac OS X's Fast User Switching feature. You can either switch out to the login window or to another user. Note: unfortunately, this is not currently compatible with `screen`.
+`swuser` switches users using Mac OS X's [Fast User Switching](http://docs.info.apple.com/article.html?path=Mac/10.6/en/8672.html) feature. You can either switch out to the login window or to another user. Note: unfortunately, this is not currently compatible with `screen`.
 
 ### trash
 
