@@ -10,7 +10,7 @@ task :default do
   unless File.exist? './bin/dict'
 	mrc = `which macrubyc`.strip # mrc == macruby compiler
 	if mrc.empty?
-	  STDERR.puts <<-EOF.each_line.map {|l| l.strip}
+	  STDERR.puts <<-EOF.split.map {|l| l.strip}
 	              Warning: MacRuby is not installed; therefore, `dict`,
 	              a tools-osx script that depends on it, will not be 
 	              installed either. This does not affect any other script.
