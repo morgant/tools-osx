@@ -6,7 +6,7 @@ by Morgan Aldridge <morgant@makkintosshu.com>
 OVERVIEW
 --------
 
-A small collection of command line tools that I've developed for Mac OS X over the years, à la NextStep/Mac OS X's `open`, `pbcopy`, `pbpaste`, etc. These are mostly `bash` scripts as an exercise in honing my bash-fu.
+A small collection of command line tools that I've developed for Mac OS X over the years, à la NextStep/Mac OS X's `open`, `pbcopy`, `pbpaste`, etc. These are mostly `bash` scripts as an exercise in honing my bash-fu, but a number of Perl & Ruby scripts have been submitted by others.
 
 TOOLS
 -----
