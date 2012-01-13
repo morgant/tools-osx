@@ -12,12 +12,14 @@ task :default do
     mrc = `which macrubyc`.strip # mrc == macruby compiler
     if mrc.empty?
       STDERR.puts <<-EOF.split("\n").map {|l| l.strip}
-                  Warning: MacRuby is not installed; therefore, `dict`,
-                  a tools-osx script that depends on it, will not be 
-                  installed either. This does not affect any other script.
+                  
+                  WARNING: MacRuby is not installed; therefore, `dict`, one
+                  of the tools that depends on it, will not be installed. 
+                  The rest of the tools will be installed.
                   
                   If you would like to use `dict`, install MacRuby from
                   http://macruby.org/ then re-install tools-osx.
+                  
                   EOF
     else
       mkdir './.tmp/'
@@ -40,4 +42,8 @@ task :uninstall do
   Dir.nonhidden_entries('./src/').each do |x| # should probably figure out a better way to do this
     rm "/usr/local/bin/#{x}"
   end
+end
+
+task :clean do
+  rm_rf './bin'
 end
