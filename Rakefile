@@ -1,3 +1,4 @@
+include FileUtils::Verbose
 
 class Dir
   def self.nonhidden_entries dirname
