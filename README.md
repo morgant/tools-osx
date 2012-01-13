@@ -25,11 +25,11 @@ TOOLS
 
 ### ql
 
-`ql` opens files with Mac OS X's Quick Look feature.
+`ql` opens files with Mac OS X's [Quick Look](http://www.apple.com/findouthow/mac/#quicklook) feature.
 
 ### swuser
 
-`swuser` switches users using Mac OS X's Fast User Switching feature. You can either switch out to the login window or to another user. Note: unfortunately, this is not currently compatible with `screen`.
+`swuser` switches users using Mac OS X's [Fast User Switching](http://docs.info.apple.com/article.html?path=Mac/10.6/en/8672.html) feature. You can either switch out to the login window or to another user. Note: unfortunately, this is not currently compatible with `screen`.
 
 ### trash
 
@@ -54,6 +54,7 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 * [`appswitch` & `launch`](http://sabi.net/nriley/software/) by Nicholas Riley
 * [`asprint`](http://hasseg.org/asprint/), [`icalBuddy`](http://hasseg.org/icalBuddy/), [`setWeblocThumb`](http://hasseg.org/setWeblocThumb/), and [`trash`](http://hasseg.org/trash/) by Ali Rantakari
 * [`iloc`](http://derailer.org/iloc/) by Nate Weaver
+* [`ithief`](http://cachivaches.chauca.net/ithief/) by Israel Chauca Fuentes
 
 SPECIAL THANKS
 --------------
