@@ -45,7 +45,8 @@ if ($ARGV[0]) {
         my $hex1 = substr $blob, 0, 2;
         my $hex2 = substr $blob, 2, 3;
         
-        print chr(hex($hex1)).chr(hex($hex2));
+        print chr(hex($hex1));
+        print chr(hex($hex2)) unless (hex($hex2) == 0);
       }
     }
   
