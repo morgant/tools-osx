@@ -7,6 +7,9 @@
 #                     Initial version. Used with permission.
 # v0.2   2010-12-08 - Morgan Aldridge <morgant@makkintosshu.com>
 #                     Now concatenates multiple text clippings. Usage instructions.
+# v0.2.1 2012-01-15 - David Kendal
+#                     Fixed NUL byte added to clipcat output when there were an odd
+#                     number of characters.
 # 
 
 use warnings;
@@ -70,3 +73,4 @@ sub escape { # http://cl.ly/3JGN -- should work to escape the filename
   $text =~ s/'/\\'/g;
   return $text;
 }
+
