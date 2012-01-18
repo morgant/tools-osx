@@ -28,6 +28,18 @@ if ARGV.empty?
   end
 else
   ARGV.each do |word|
-    definition word
+  	# handle options
+  	if word =~ /^-/
+  	  word = case
+  	  when '-h':
+  	    puts <<-EOF
+  	  	  Usage: #{File.basename $0} [options] word ...
+            -v		verbose output
+            -h		print these usage instructions
+  	    EOF
+  	  end
+  	else
+      definition word
+    end
   end
 end
