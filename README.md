@@ -55,6 +55,7 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 * [`asprint`](http://hasseg.org/asprint/), [`icalBuddy`](http://hasseg.org/icalBuddy/), [`setWeblocThumb`](http://hasseg.org/setWeblocThumb/), and [`trash`](http://hasseg.org/trash/) by Ali Rantakari
 * [`iloc`](http://derailer.org/iloc/) by Nate Weaver
 * [`ithief`](http://cachivaches.chauca.net/ithief/) by Israel Chauca Fuentes
+* [`service`](https://github.com/dpkendal/service) by David Kendal
 
 SPECIAL THANKS
 --------------
