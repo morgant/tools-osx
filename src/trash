@@ -22,7 +22,7 @@
 # v0.5   2011-07-04 - Morgan Aldridge
 #                     Support for trashing/emptying using Finder via AppleScript,
 #                     when available.
-# v0.5.1 2011-12-20 - Matt Brictson
+# v0.5.1 2012-02-17 - Matt Brictson & Morgan Aldridge
 #                     Fixed bug where cwd would get trashed instead of specified
 #                     file/path if it contained a relative path when trashing
 #                     using Finder via AppleScript.
@@ -53,6 +53,56 @@ function have_scriptable_finder() {
 	else
 		false
 	fi
+}
+
+## 
+## Convert a relative path to an absolute path.
+## 
+## Based on http://www.linuxquestions.org/questions/programming-9/bash-script-return-full-path-and-filename-680368/page2.html#post4239549
+## 
+## @param string the string to converted from a relative path to an absolute path
+## @returns Outputs the absolute path to STDOUT, returns 0 if successful or 1 if an error (esp. path not found).
+## 
+function abs_path()
+{
+	local success=true
+	
+	# start with the file name (sans the trailing slash)
+	local path="$1"
+	path="${path%/}"
+	
+	# get the basename of the file (ignoring '.' & '..', because they're really part of the path)
+	local file_basename="${path##*/}"
+	if [[ ( "$file_basename" = "." ) || ( "$file_basename" = ".." ) ]]; then
+		file_basename=""
+	fi
+	
+	# extracts the directory component of the full path & attempt to change to it
+	local directory="${path%$file_basename}"
+	if [ "$directory" ]; then
+	  if ! cd "$directory" &>/dev/null ; then
+	  	success=false
+	  fi
+	fi
+	
+	if $success; then
+		# does the filename exist?
+		if [[ ( ! -z "$file_basename" ) && ( ! -e "$file_basename" ) ]]; then
+			success=false
+		fi
+		
+		# get the absolute path of the current directory & change back to previous directory
+		local abs_path="$(pwd -P)"
+		cd "-" &>/dev/null
+		  
+		# Append base filename to absolute path
+		abs_path="${abs_path}/${file_basename}"
+		
+		# output the absolute path
+		echo "$abs_path"
+	fi
+	
+	$success
 }
 
 # see if any arguments were passed in
@@ -192,7 +242,13 @@ if [ $# -gt 0 ]; then
 					file="$1"
 				else
 					# expand relative to absolute path
-					file=`ruby -e 'puts File.expand_path ARGV[0]' "$1"`
+					if $verbose; then printf "Determining absolute path for '%s'... " "$1"; fi
+					file="$(abs_path "$1")"
+					if [ $? -eq 0 ]; then
+						if $verbose; then printf "Done.\n"; fi
+					else
+						if $verbose; then printf "ERROR!\n"; fi
+					fi
 				fi
 				if $verbose; then printf "Telling Finder to trash '%s'... " "$file"; fi
 				if /usr/bin/osascript -e "tell application \"Finder\" to delete POSIX file \"$file\"" ; then
