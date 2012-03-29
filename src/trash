@@ -22,7 +22,7 @@
 # v0.5   2011-07-04 - Morgan Aldridge
 #                     Support for trashing/emptying using Finder via AppleScript,
 #                     when available.
-# v0.5.1 2012-02-17 - Matt Brictson & Morgan Aldridge
+# v0.5.1 2012-03-29 - Matt Brictson & Morgan Aldridge
 #                     Fixed bug where cwd would get trashed instead of specified
 #                     file/path if it contained a relative path when trashing
 #                     using Finder via AppleScript.
