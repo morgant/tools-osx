@@ -55,9 +55,12 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 * [`asprint`](http://hasseg.org/asprint/), [`icalBuddy`](http://hasseg.org/icalBuddy/), [`setWeblocThumb`](http://hasseg.org/setWeblocThumb/), and [`trash`](http://hasseg.org/trash/) by Ali Rantakari
 * [`iloc`](http://derailer.org/iloc/) by Nate Weaver
 * [`ithief`](http://cachivaches.chauca.net/ithief/) by Israel Chauca Fuentes
+* [osxiconutils (`geticon`, `icns2pict`, `pict2icns`, `seticon`)](http://sveinbjorn.org/osxiconutils) & [osxutils (`cpath`, `getfcomment`, `geticon`, `google`, `hfsdata`, `lsmac`, `mkalias`, `rcmac`, `setfcomment`, `setfctypes`, `setfflags`, `seticon`, `setlabel`, `setsuffix`, `setvolume`, `trash`, `wiki`, `wsupdate`)](http://sveinbjorn.org/osxutils) by Sveinbjorn Thordarson
 * [`service`](https://github.com/dpkendal/service) by David Kendal
+* [`trash`](http://www.dribin.org/dave/osx-trash/) by Dave Dribin
+* [`webkit2png`](http://www.paulhammond.org/webkit2png/) by Paul Hammond
 
 SPECIAL THANKS
 --------------
 
-Special thanks to: David Kendal for all his submissions and collaboration; Matt Brictson for his relative path bug fix in `trash`.
+Special thanks to: David Kendal for all his submissions and collaboration; Matt Brictson for his initial relative path bug fix in `trash`.
