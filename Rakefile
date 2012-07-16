@@ -40,7 +40,7 @@ end
 
 task :uninstall do
   Dir.nonhidden_entries('./src/').each do |x| # should probably figure out a better way to do this
-    rm "/usr/local/bin/#{x}"
+    rm "/usr/local/bin/#{x}", :force => true
   end
 end
 
