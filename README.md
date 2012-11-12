@@ -56,6 +56,7 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 * [`iloc`](http://derailer.org/iloc/) by Nate Weaver
 * [`ithief`](http://cachivaches.chauca.net/ithief/) by Israel Chauca Fuentes
 * [osxiconutils (`geticon`, `icns2pict`, `pict2icns`, `seticon`)](http://sveinbjorn.org/osxiconutils) & [osxutils (`cpath`, `getfcomment`, `geticon`, `google`, `hfsdata`, `lsmac`, `mkalias`, `rcmac`, `setfcomment`, `setfctypes`, `setfflags`, `seticon`, `setlabel`, `setsuffix`, `setvolume`, `trash`, `wiki`, `wsupdate`)](http://sveinbjorn.org/osxutils) by Sveinbjorn Thordarson
+* [`rem`](https://github.com/kykim/rem) by Kevin Y. Kim
 * [`service`](https://github.com/dpkendal/service) by David Kendal
 * [`trash`](http://www.dribin.org/dave/osx-trash/) by Dave Dribin
 * [`webkit2png`](http://www.paulhammond.org/webkit2png/) by Paul Hammond
