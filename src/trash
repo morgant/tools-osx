@@ -26,6 +26,10 @@
 #                     Fixed bug where cwd would get trashed instead of specified
 #                     file/path if it contained a relative path when trashing
 #                     using Finder via AppleScript.
+# v0.5.2 2012-11-30 - Morgan Aldridge
+#                     Merged in fix for realpath() implementation to fix
+#                     assumption that relative paths were in root directory.
+#                     Also correctly warns of missing files/directories.
 # 
 
 # global variables
@@ -58,12 +62,12 @@ function have_scriptable_finder() {
 ## 
 ## Convert a relative path to an absolute path.
 ## 
-## Based on http://www.linuxquestions.org/questions/programming-9/bash-script-return-full-path-and-filename-680368/page2.html#post4239549
+## From http://github.com/morgant/realpath
 ## 
 ## @param string the string to converted from a relative path to an absolute path
 ## @returns Outputs the absolute path to STDOUT, returns 0 if successful or 1 if an error (esp. path not found).
 ## 
-function abs_path()
+function realpath()
 {
 	local success=true
 	local path="$1"
@@ -75,16 +79,21 @@ function abs_path()
 		# start with the file name (sans the trailing slash)
 		path="${path%/}"
 		
+		# if we stripped off the trailing slash and were left with nothing, that means we're in the root directory
+		if [ -z "$path" ]; then
+			path="/"
+		fi
+		
 		# get the basename of the file (ignoring '.' & '..', because they're really part of the path)
 		local file_basename="${path##*/}"
 		if [[ ( "$file_basename" = "." ) || ( "$file_basename" = ".." ) ]]; then
 			file_basename=""
 		fi
 		
-		# extracts the directory component of the full path, if it's empty then assume '/'
+		# extracts the directory component of the full path, if it's empty then assume '.' (the current working directory)
 		local directory="${path%$file_basename}"
 		if [ -z "$directory" ]; then
-			directory='/'
+			directory='.'
 		fi
 		
 		# attempt to change to the directory
@@ -246,69 +255,74 @@ if [ $# -gt 0 ]; then
 			#printf "destination: '%s'\n" $TRASH
 			if $verbose; then v="-v"; fi
 			
-			# determine if we'll tell Finder to trash the file via AppleScript (very easy, plus free undo
-			# support, but Finder must be running for the user and is DOES NOT work from within `screen`)
-			if have_scriptable_finder; then
-				# determine whether we have an absolute path name to the file or not
-				if [ "${1:0:1}" = "/" ]; then
-					file="$1"
-				else
-					# expand relative to absolute path
-					if $verbose; then printf "Determining absolute path for '%s'... " "$1"; fi
-					file="$(abs_path "$1")"
-					if [ $? -eq 0 ]; then
+			# does the file we're trashing exist?
+			if [ ! -e "#1" ]; then
+				printf "trash: '%s': No such file or directory\n" "$1"
+			else
+				# determine if we'll tell Finder to trash the file via AppleScript (very easy, plus free undo
+				# support, but Finder must be running for the user and is DOES NOT work from within `screen`)
+				if have_scriptable_finder; then
+					# determine whether we have an absolute path name to the file or not
+					if [ "${1:0:1}" = "/" ]; then
+						file="$1"
+					else
+						# expand relative to absolute path
+						if $verbose; then printf "Determining absolute path for '%s'... " "$1"; fi
+						file="$(realpath "$1")"
+						if [ $? -eq 0 ]; then
+							if $verbose; then printf "Done.\n"; fi
+						else
+							if $verbose; then printf "ERROR!\n"; fi
+						fi
+					fi
+					if $verbose; then printf "Telling Finder to trash '%s'... " "$file"; fi
+					if /usr/bin/osascript -e "tell application \"Finder\" to delete POSIX file \"$file\"" ; then
 						if $verbose; then printf "Done.\n"; fi
 					else
 						if $verbose; then printf "ERROR!\n"; fi
 					fi
-				fi
-				if $verbose; then printf "Telling Finder to trash '%s'... " "$file"; fi
-				if /usr/bin/osascript -e "tell application \"Finder\" to delete POSIX file \"$file\"" ; then
-					if $verbose; then printf "Done.\n"; fi
+				# Finder isn't available for this user, so don't rely on it (we'll do all the dirty work ourselves)
 				else
-					if $verbose; then printf "ERROR!\n"; fi
-				fi
-			# Finder isn't available for this user, so don't rely on it (we'll do all the dirty work ourselves)
-			else
-				# determine whether we should be putting this in a volume-specific .Trashes or user's .Trash
-				IFS=/ read -r -d '' _ _ vol _ <<< "$1"
-				if [[ ("${1:0:9}" == "/Volumes/") && (-n "$vol") && ($(readlink "/Volumes/$vol") != "/") ]]; then
-					trash="/Volumes/${vol}/.Trashes/${uid}/"
-				else
-					trash="/Users/${user}/.Trash/"
-				fi
-				# create the trash folder if necessary
-				if [ ! -d "$trash" ]; then
-					mkdir $v "$trash"
-				fi
-				# move the file to the trash
-				if [ ! -e "${trash}$1" ]; then
-					mv $v "$1" "$trash"
-				else
-					# determine if the filename has an extension
-					ext=false
-					case "$1" in
-						*.*) ext=true ;;
-					esac
-					
-					# keep incrementing a number to append to the filename to mimic Finder
-					i=1
-					if $ext; then
-						new="${trash}${1%%.*} ${i}.${1##*.}"
+					# determine whether we should be putting this in a volume-specific .Trashes or user's .Trash
+					IFS=/ read -r -d '' _ _ vol _ <<< "$1"
+					if [[ ("${1:0:9}" == "/Volumes/") && (-n "$vol") && ($(readlink "/Volumes/$vol") != "/") ]]; then
+						trash="/Volumes/${vol}/.Trashes/${uid}/"
 					else
-						new="${trash}$1 $i"
+						trash="/Users/${user}/.Trash/"
 					fi
-					while [ -e "$new" ]; do
-						((i=$i + 1))
+					# create the trash folder if necessary
+					if [ ! -d "$trash" ]; then
+						mkdir $v "$trash"
+					fi
+					# move the file to the trash
+					if [ ! -e "${trash}$1" ]; then
+						mv $v "$1" "$trash"
+					else
+						# determine if the filename has an extension
+						ext=false
+						case "$1" in
+							*.*) ext=true ;;
+						esac
+						
+						# keep incrementing a number to append to the filename to mimic Finder
+						i=1
 						if $ext; then
 							new="${trash}${1%%.*} ${i}.${1##*.}"
 						else
 							new="${trash}$1 $i"
 						fi
-					done
-					
-					#move the file to the trash with the new name
-					mv $v "$1" "$new"
+						while [ -e "$new" ]; do
+							((i=$i + 1))
+							if $ext; then
+								new="${trash}${1%%.*} ${i}.${1##*.}"
+							else
+								new="${trash}$1 $i"
+							fi
+						done
+						
+						#move the file to the trash with the new name
+						mv $v "$1" "$new"
+					fi
 				fi
 			fi
 			shift
