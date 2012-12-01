@@ -256,7 +256,7 @@ if [ $# -gt 0 ]; then
 			if $verbose; then v="-v"; fi
 			
 			# does the file we're trashing exist?
-			if [ ! -e "#1" ]; then
+			if [ ! -e "$1" ]; then
 				printf "trash: '%s': No such file or directory\n" "$1"
 			else
 				# determine if we'll tell Finder to trash the file via AppleScript (very easy, plus free undo
