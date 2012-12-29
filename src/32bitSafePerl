@@ -19,11 +19,11 @@ version_major=$(sw_vers -productVersion | cut -d . -f 2)
 #version_minor=$(sw_vers -productVersion | cut -d . -f 3)
 
 interpreter=''
-# 10.7.x now has no 32-bit only version of Perl included, so we
+# 10.7.x onwards now has no 32-bit only version of Perl included, so we
 # need to set Perl's prefer-32-Bit default
-if [ $version_major -eq 7 ]; then
+if [ $version_major -ge 7 ]; then
 	if [ "$(defaults read com.apple.versioner.perl Prefer-32-Bit)" != "1" ]; then
-		printf "Mac OS X 10.7.x Lion requires that we set Perl's 'Prefer-32-Bit' default for %s to work properly.\n" "$1"
+		printf "Mac OS X 10.7 and later require that we set Perl's 'Prefer-32-Bit' default for %s to work properly.\n" "$1"
 		printf "Shall we do that for you (y/n)?"
 		read confirm
 		if [ "$confirm" = "y" ]; then
