@@ -34,6 +34,10 @@ task :default do
 end
 
 task :install => [:default] do
+  unless File.exist? '/usr/local/bin'		# create /usr/local/bin if it doesn't exist
+  	mkdir '/usr/local/bin', :mode => 0755
+  	chown 'root', 'wheel', '/usr/local/bin'
+  end
   bins = Dir.nonhidden_entries('./bin/')
   sh "install -b #{bins.map {|x| "./bin/#{x}"}.join ' '} /usr/local/bin/"
 end
