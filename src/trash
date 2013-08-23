@@ -30,13 +30,15 @@
 #                     Merged in fix for realpath() implementation to fix
 #                     assumption that relative paths were in root directory.
 #                     Also correctly warns of missing files/directories.
+# v0.5.3 2013-08-23 - huyz
+#                     Fixed determination of Finder's PID when Path Finder is running
 # 
 
 # global variables
 verbose=false
 user=$(whoami)
 uid=$(id -u "$user")
-finder_pid=$(ps -u "$user" | grep Finder.app | grep -v grep | awk '{print $1}')
+finder_pid=$(ps -u "$user" | grep CoreServices/Finder.app | grep -v grep | awk '{print $1}')
 v=''
 
 # print usage instructions (help)
