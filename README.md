@@ -64,4 +64,4 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 SPECIAL THANKS
 --------------
 
-Special thanks to: David Kendal for all his submissions and collaboration; Matt Brictson for his initial relative path bug fix in `trash`.
+Special thanks to: David Kendal for all his submissions and collaboration; Matt Brictson for his initial relative path bug fix in `trash`; huyz for the improved determination of Finder's PID to prevent possible false-positives in `trash`.
