@@ -1,8 +1,8 @@
 #!/usr/bin/env macruby
 
-# 
+#
 # dict - Make a lookup in Mac OS X's included dictionary. Requires MacRuby.
-# 
+#
 # v1.0   2011-08-01 - David Kendal
 #                     Initial version.
 # v1.1   2012-01-08 - David Kendal
@@ -31,7 +31,7 @@ else
   	# handle options
   	if word =~ /^-/
   	  word = case
-  	  when '-h':
+  	  when '-h'
   	    puts <<-EOF
   	  	  Usage: #{File.basename $0} [options] word ...
             -v		verbose output
