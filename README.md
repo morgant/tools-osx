@@ -57,6 +57,7 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 * [`asprint`](http://hasseg.org/asprint/), [`icalBuddy`](http://hasseg.org/icalBuddy/), [`setWeblocThumb`](http://hasseg.org/setWeblocThumb/), and [`trash`](http://hasseg.org/trash/) by Ali Rantakari
 * [`duti`](http://duti.org/) by Andrew Mortensen
 * [`iloc`](http://derailer.org/iloc/) by Nate Weaver
+* [`imsg`](https://github.com/chrisfsampaio/imsg) by Christian Sampaio
 * [`ithief`](http://cachivaches.chauca.net/ithief/) by Israel Chauca Fuentes
 * [osxiconutils (`geticon`, `icns2pict`, `pict2icns`, `seticon`)](http://sveinbjorn.org/osxiconutils) & [osxutils (`cpath`, `getfcomment`, `geticon`, `google`, `hfsdata`, `lsmac`, `mkalias`, `rcmac`, `setfcomment`, `setfctypes`, `setfflags`, `seticon`, `setlabel`, `setsuffix`, `setvolume`, `trash`, `wiki`, `wsupdate`)](http://sveinbjorn.org/osxutils) by Sveinbjorn Thordarson
 * [`pngpaste`](https://github.com/jcsalterego/pngpaste) by Jerry Chen
