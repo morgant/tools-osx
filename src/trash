@@ -278,7 +278,7 @@ if [ $# -gt 0 ]; then
 						fi
 					fi
 					if $verbose; then printf "Telling Finder to trash '%s'... " "$file"; fi
-					if /usr/bin/osascript -e "tell application \"Finder\" to delete POSIX file \"$file\"" ; then
+					if /usr/bin/osascript -e "tell application \"Finder\" to delete POSIX file \"$file\"" >/dev/null ; then
 						if $verbose; then printf "Done.\n"; fi
 					else
 						if $verbose; then printf "ERROR!\n"; fi
