@@ -66,6 +66,7 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 * [`service`](https://github.com/dpkendal/service) by David Kendal
 * [`tag`](https://github.com/jdberry/tag) by James Berry
 * [`trash`](http://www.dribin.org/dave/osx-trash/) by Dave Dribin
+* [`trash`](https://github.com/sindresorhus/trash) by Sindre Sorhus
 * [`webkit2png`](http://www.paulhammond.org/webkit2png/) by Paul Hammond
 
 SPECIAL THANKS
