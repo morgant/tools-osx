@@ -55,6 +55,7 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 
 * [`appswitch` & `launch`](http://sabi.net/nriley/software/) by Nicholas Riley
 * [`asprint`](http://hasseg.org/asprint/), [`icalBuddy`](http://hasseg.org/icalBuddy/), [`setWeblocThumb`](http://hasseg.org/setWeblocThumb/), and [`trash`](http://hasseg.org/trash/) by Ali Rantakari
+* [`contacts`](http://www.gnufoo.org/contacts/) by Shane Celis
 * [`duti`](http://duti.org/) by Andrew Mortensen
 * [`get-location`](https://github.com/lindes/get-location) by David Lindes
 * [`iloc`](http://derailer.org/iloc/) by Nate Weaver
