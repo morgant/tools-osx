@@ -30,8 +30,8 @@ else
   ARGV.each do |word|
   	# handle options
   	if word =~ /^-/
-  	  word = case
-  	  when '-h':
+  	  case word 
+  	  when '-h'
   	    puts <<-EOF
   	  	  Usage: #{File.basename $0} [options] word ...
             -v		verbose output
