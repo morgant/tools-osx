@@ -32,6 +32,8 @@
 #                     Also correctly warns of missing files/directories.
 # v0.5.3 2013-08-23 - huyz
 #                     Fixed determination of Finder's PID when Path Finder is running
+# v0.6   2014-01-30 - Lucas Morales
+#                     Added long argument forms.
 # 
 
 # global variables
@@ -44,11 +46,11 @@ v=''
 # print usage instructions (help)
 function usage() {
 	printf "Usage: trash [options] file ...\n"
-	printf "  -v		verbose output\n"
-	printf "  -h		print these usage instructions\n"
-	printf "  -l            list trash contents\n"
-	printf "  -e            empty trash contents\n"
-	printf "  -s		secure empty trash contents\n"
+	printf "  -v --verbose   verbose output\n"
+	printf "  -h --help      print these usage instructions\n"
+	printf "  -l --list      list trash contents\n"
+	printf "  -e --empty     empty trash contents\n"
+	printf "  -s --sempty    secure empty trash contents\n"
 }
 
 # determine whether we can script the Finder or not
@@ -133,16 +135,16 @@ if [ $# -gt 0 ]; then
 	# if so, step through them all and process them
 	while [ $# -gt 0 ]; do
 		# see if the user intended us to run in verbose mode
-		if [ "$1" = "-v" ]; then
+		if [ "$1" = "-v" ] || [ "$1" = "--verbose" ]; then
 			shift
 			verbose=true
 		# see if the user requested help
-		elif [ "$1" = "-h" ]; then
+		elif [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 			shift
 			usage
 			exit
 		# see if the user requested a list of trash contents
-		elif [ "$1" = "-l" ]; then
+		elif [ "$1" = "-l" ] || [ "$1" = "--list" ]; then
 			shift
 			num_volumes=0
 			total_blocks=0
@@ -180,7 +182,7 @@ if [ $# -gt 0 ]; then
 			printf "%s across %s volume(s).\n" "$size" $num_volumes
 			exit
 		# see if the user requested to empty the trash contents
-		elif [ "$1" = "-e" ]; then
+		elif [ "$1" = "-e" ] || [ "$1" = "--empty" ]; then
 			shift
 			# determine if we can tell Finder to empty trash via AppleScript
 			if have_scriptable_finder; then
@@ -216,7 +218,7 @@ if [ $# -gt 0 ]; then
 				exit
 			fi
 		# see if the user requested to securely empty the trash contents
-		elif [ "$1" = "-s" ]; then
+		elif [ "$1" = "-s" ] || [ "$1" = "--sempty" ]; then
 			shift
 			# determine if we can tell Finder to securely empty trash via AppleScript
 			if have_scriptable_finder; then
