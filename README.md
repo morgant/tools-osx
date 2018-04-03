@@ -66,6 +66,7 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 * [`pngpaste`](https://github.com/jcsalterego/pngpaste) by Jerry Chen
 * [`rem`](https://github.com/kykim/rem) by Kevin Y. Kim
 * [`service`](https://github.com/dpk/service) by David Kendal
+* [`stronghold`](https://github.com/alichtman/stronghold) and [`shallow-backup`](https://github.com/alichtman/shallow-backup) by Aaron Lichtman
 * [`tag`](https://github.com/jdberry/tag) by James Berry
 * [`trash`](http://www.dribin.org/dave/osx-trash/) by Dave Dribin
 * [`trash`](https://github.com/sindresorhus/trash) by Sindre Sorhus
