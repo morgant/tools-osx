@@ -3,7 +3,7 @@ tools-osx README
 
 by Morgan Aldridge <morgant@makkintosshu.com>
 
-[![tools-osx on OpenHub](https://www.openhub.net/p/tools-osx/widgets/project_thin_badge.gif)](https://www.openhub.net/p/tools-osx)
+[![tools-osx on OpenHub](https://www.openhub.net/p/tools-osx/widgets/project_thin_badge.gif)](https://www.openhub.net/p/tools-osx) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=DBY3R8ARLDELE&currency_code=USD&source=url)
 
 OVERVIEW
 --------
