@@ -3,7 +3,7 @@ tools-osx README
 
 by Morgan Aldridge <morgant@makkintosshu.com>
 
-[![tools-osx on Ohloh](https://www.ohloh.net/p/tools-osx/widgets/project_thin_badge.gif)](https://www.ohloh.net/p/tools-osx)
+[![tools-osx on OpenHub](https://www.openhub.net/p/tools-osx/widgets/project_thin_badge.gif)](https://www.openhub.net/p/tools-osx)
 
 OVERVIEW
 --------
