@@ -10,6 +10,8 @@
 # v0.3   2010-12-07 - Morgan Aldridge
 #                     Added "-f" option to force a disk to eject. Now supports ejecting of
 #                     network volumes.
+# v0.4   2014-01-30 - Lucas Morales
+#                     Added long argument forms.
 # 
 
 # TO DO:
@@ -23,9 +25,9 @@ help=false
 # print usage instructions (help)
 function usage() {
 	printf "Usage: eject [options] volume ...\n"
-	printf "  -f            force volume to be ejected, even if files/directories are open\n"
-	printf "  -v		verbose output\n"
-	printf "  -h		print these usage instructions\n"
+	printf "  -f --force     force volume to be ejected, even if files/directories are open\n"
+	printf "  -v --verbose   verbose output\n"
+	printf "  -h --help      print these usage instructions\n"
 }
 
 # see if any arguments were passed in
@@ -33,15 +35,15 @@ if [ $# -gt 0 ]; then
 	# if so, step through them all and process them
 	while [ $# -gt 0 ]; do
 		# see if the user intended us to run in verbose mode
-                if [ "$1" = "-v" ]; then
+                if [ "$1" = "-v" ] || [ "$1" = "--verbose" ]; then
                         shift
                         verbose=true
 		# see if the user intended us to force the action
-		elif [ "$1" = "-f" ]; then
+		elif [ "$1" = "-f" ] || [ "$1" = "--force" ]; then
 			shift
 			force=true
                 # see if the user requested help
-                elif [ "$1" = "-h" ]; then
+                elif [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
                         shift
                         help=true
                         usage
