@@ -12,7 +12,7 @@
 # 
 
 # Quick Look requires 10.5.x or higher
-if [ $(sw_vers -productVersion | cut -d . -f 2) -lt 5 ]; then
+if [ $(sw_vers -productVersion | cut -d . -f 2) -lt 5 ] && [ $(sw_vers -productVersion | cut -d . -f 1) -lt 11 ]; then
 	echo "Quick Look requires Mac OS X 10.5 Leopard or newer."
 	exit 1
 fi
