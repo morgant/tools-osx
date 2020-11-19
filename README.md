@@ -15,11 +15,11 @@ TOOLS
 
 ### clipcat
 
-`clipcat` prints and concatenates Mac OS text clippings. [Submitted](https://gist.github.com/705623) by David Kendal.
+`clipcat` prints and concatenates Mac OS text clippings. Submitted by Daphne Preston-Kendal.
 
 ### dict
 
-`dict` performs a look-up in the Mac OS X dictionary. Note: unlike the other scripts provided, this one requires that you have [MacRuby](http://macruby.org/) installed. Submitted by David Kendal.
+`dict` performs a look-up in the Mac OS X dictionary. Note: unlike the other scripts provided, this one requires that you have [MacRuby](http://macruby.org/) installed. Submitted by Daphne Preston-Kendal.
 
 ### eject
 
@@ -27,11 +27,11 @@ TOOLS
 
 ### ql
 
-`ql` opens files with the Mac OS X [Quick Look](http://www.apple.com/findouthow/mac/#quicklook) feature.
+`ql` opens files with the Mac OS X [Quick Look](https://support.apple.com/en-ca/guide/mac-help/mh14119/mac) feature.
 
 ### swuser
 
-`swuser` switches users using the Mac OS X [Fast User Switching](http://docs.info.apple.com/article.html?path=Mac/10.6/en/8672.html) feature. You can either switch out to the login window or to another user. Note: unfortunately, this is not currently compatible with `screen`.
+`swuser` switches users using the Mac OS X [Fast User Switching](https://support.apple.com/en-ca/guide/mac-help/mchlp2439/mac) feature. You can either switch out to the login window or to another user. Note: unfortunately, this is not currently compatible with `screen`.
 
 ### trash
 
@@ -39,7 +39,7 @@ TOOLS
 
 ### with
 
-`with` sets the application with which specified documents will be opened. It can even change and open in one fell swoop. Submitted by David Kendal.
+`with` sets the application with which specified documents will be opened. It can even change and open in one fell swoop. Submitted by Daphne Preston-Kendal.
 
 INSTALLATION
 ------------
@@ -55,17 +55,17 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 
 * [`appswitch`](http://sabi.net/nriley/software/#appswitch) and [`launch`](http://sabi.net/nriley/software/#launch) by Nicholas Riley
 * [`asprint`](http://hasseg.org/asprint/), [`icalBuddy`](http://hasseg.org/icalBuddy/), [`setWeblocThumb`](http://hasseg.org/setWeblocThumb/), and [`trash`](http://hasseg.org/trash/) by Ali Rantakari
-* [`contacts`](http://www.gnufoo.org/contacts/) by Shane Celis
+* [`contacts`](https://web.archive.org/web/20160319061131/http://www.gnufoo.org/contacts/) by Shane Celis
 * [`dockutil`](https://github.com/kcrawford/dockutil) by Kyle Crawford
-* [`duti`](http://duti.org/) by Andrew Mortensen
+* [`duti`](https://github.com/moretension/duti) by Andrew Mortensen
 * [`get-location`](https://github.com/lindes/get-location) by David Lindes
-* [`iloc`](http://derailer.org/iloc/) by Nate Weaver
+* [`iloc`](https://derailer.org/iloc/) by Nate Weaver
 * [`imsg`](https://github.com/chrisfsampaio/imsg) by Christian Sampaio
-* [`ithief`](http://cachivaches.chauca.net/ithief/) by Israel Chauca Fuentes
-* [osxiconutils (`geticon`, `icns2pict`, `pict2icns`, `seticon`)](http://sveinbjorn.org/osxiconutils) & [osxutils (`cpath`, `getfcomment`, `geticon`, `google`, `hfsdata`, `lsmac`, `mkalias`, `rcmac`, `setfcomment`, `setfctypes`, `setfflags`, `seticon`, `setlabel`, `setsuffix`, `setvolume`, `trash`, `wiki`, `wsupdate`)](http://sveinbjorn.org/osxutils) by Sveinbjorn Thordarson
+* [`ithief`](https://web.archive.org/web/20120418093332/http://cachivaches.chauca.net/ithief/) by Israel Chauca Fuentes
+* [osxiconutils (`geticon`, `icns2pict`, `pict2icns`, `seticon`)](http://sveinbjorn.org/osxiconutils) & [osxutils (`cpath`, `getfcomment`, `geticon`, `google`, `hfsdata`, `lsmac`, `mkalias`, `rcmac`, `setfcomment`, `setfctypes`, `setfflags`, `seticon`, `setlabel`, `setsuffix`, `setvolume`, `trash`, `wiki`, `wsupdate`)](https://web.archive.org/web/20100831125502/http://osxutils.sourceforge.net/) by Sveinbjorn Thordarson
 * [`pngpaste`](https://github.com/jcsalterego/pngpaste) by Jerry Chen
 * [`rem`](https://github.com/kykim/rem) by Kevin Y. Kim
-* [`service`](https://github.com/dpk/service) by David Kendal
+* [`service`](https://github.com/dpk/service) by Daphne Preston-Kendal
 * [`stronghold`](https://github.com/alichtman/stronghold) and [`shallow-backup`](https://github.com/alichtman/shallow-backup) by Aaron Lichtman
 * [`tag`](https://github.com/jdberry/tag) by James Berry
 * [`trash`](http://www.dribin.org/dave/osx-trash/) by Dave Dribin
@@ -75,4 +75,4 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 SPECIAL THANKS
 --------------
 
-Special thanks to: David Kendal for all his submissions and collaboration; Matt Brictson for his initial relative path bug fix in `trash`; huyz for the improved determination of Finder’s PID to prevent possible false-positives in `trash`.
+Special thanks to: [Daphne Preston-Kendal](http://dpk.io/) for all her submissions and collaboration; [Matt Brictson](https://mattbrictson.com) for his initial relative path bug fix in `trash`; huyz for the improved determination of Finder’s PID to prevent possible false-positives in `trash`.
