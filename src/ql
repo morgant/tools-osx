@@ -9,6 +9,8 @@
 #                     Initial version.
 # v0.2   2014-01-30 - Lucas Morales
 #                     Added long argument forms.
+# v0.3   2020-11-15 - Benito Marcote
+#                     Added support for macOS 11 Big Sur.
 # 
 
 # Quick Look requires 10.5.x or higher
