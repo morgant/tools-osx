@@ -36,6 +36,8 @@
 #                     Added long argument forms.
 # v0.6.1 2014-05-12 - Matt Torok
 #                     Supress `osascript` output when moving files to trash.
+# v0.7   2021-02-26 - Morgan Aldridge
+#                     Check for Full Disk Access on macOS >= 10.15.
 #
 
 # global variables
@@ -53,6 +55,15 @@ function usage() {
 	printf "  -l --list      list trash contents\n"
 	printf "  -e --empty     empty trash contents\n"
 	printf "  -s --sempty    secure empty trash contents\n"
+}
+
+# determine whether we have full disk access
+function have_full_disk_access() {
+  if [ $(sw_vers -productVersion | cut -d . -f 1) -lt 11 ] && [ $(sw_vers -productVersion | cut -d . -f 2) -lt 15 ] ; then
+    true
+  else
+    sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db 'select * from access' > /dev/null 2>&1 && true || false
+  fi
 }
 
 # determine whether we can script the Finder or not
@@ -131,6 +142,14 @@ function realpath()
 	
 	$success
 }
+
+if ! have_full_disk_access ; then
+  printf "%s requires Full Disk Access!\n\n" "$(basename "$0")"
+  printf "Please go to System Preferences > Security & Privacy > Privacy > Full Disk Access,\n"
+  printf "press the '+' button, and add /usr/libexec/ssh-keygen-wrapper and your terminal\n"
+  printf "application (usually /Applications/Utilities/Terminal.app).\n"
+  exit 1
+fi
 
 # see if any arguments were passed in
 if [ $# -gt 0 ]; then
