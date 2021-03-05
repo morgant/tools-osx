@@ -25,6 +25,10 @@ TOOLS
 
 `eject` ejects a volume or network volume and all other volumes on the same local device. A shorter, simpler, smarter wrapper of `diskutil`’s various eject/unmount options and allows specifying either a full path in `/Volumes` or just the volume name.
 
+### launch
+
+`launch` searches for and launches applications. It's a slightly smarter wrapper for `open -a` with wildcard matching via Spotlight, if available, or `find`.
+
 ### ql
 
 `ql` opens files with the Mac OS X [Quick Look](https://support.apple.com/en-ca/guide/mac-help/mh14119/mac) feature.

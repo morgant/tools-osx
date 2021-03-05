@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+
+#
+# launch - find & launch applications by name
+#
+# CHANGE LOG:
+#
+# v0.1   2021-03-05 - Morgan T. Aldridge <morgant@makkintosshu.com>
+#                     Initial version.
+#
+# LICENSE:
+#
+# Copyright (c) 2021, Morgan T. Aldridge. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without 
+# modification, are permitted provided that the following conditions are met:
+#
+# - Redistributions of source code must retain the above copyright notice, this 
+#   list of conditions and the following disclaimer.
+# - Redistributions in binary form must reproduce the above copyright notice, 
+#   this list of conditions and the following disclaimer in the documentation 
+#   and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE 
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+# info
+tool="$(basename $0)"
+version="0.1"
+copyright="Copyright (c) 2021 Morgan Aldridge"
+
+# globals
+verbose=false
+search_paths=("/System/Applications" "/Applications" "/Network/Applications" "${HOME}/Applications")
+
+function usage() {
+  echo "Usage: ${tool} [options] <application> [<param> ...]"
+  echo
+  echo "Options:"
+  echo " -h, --help    : print these usage instructions"
+  echo " -v, --verbose : verbose output"
+  echo " -V, --version : print version information"
+  echo
+}
+
+function version() {
+  echo "${tool} v${version} ${copyright}"
+}
+
+function spotlight_enabled() {
+  mdutil -s / | grep "Indexing enabled" > /dev/null && true || false
+}
+
+function find_apps_in_path() {
+  local path="$1"
+  local query="$2"
+
+  spotlight_enabled \
+    && mdfind -onlyin "${path}" -literal "* = '${query}*'cdw && kMDItemKind == 'Application'" \
+    || find "${path}" -iname "*${query}*.app" -depth 1
+}
+
+function find_apps() {
+  local query="$1"
+
+  for path in "${search_paths[@]}" ; do
+    [ -d "${path}" ] && find_apps_in_path "${path}" "${query}"
+  done
+}
+
+function main() {
+  # parse params
+  local query=""
+  while [ $# -gt 0 ] ; do
+    case "$1" in
+      "-h" | "--help")
+        usage && exit 0
+        ;;
+      "-V" | "--version")
+        version && exit 0
+        ;;
+      "-v" | "--verbose")
+        verbose=true && shift
+        ;;
+      -*)
+        echo "Unknown option '${1}'!" && echo && usage && exit 1
+        ;;
+      *)
+        query="$1" && shift && break
+        ;;
+    esac
+  done
+  [ -z "${query}" ] && usage && exit 1
+
+  # find matching apps
+  local apps=()
+  while IFS= read -r line; do
+    apps+=("${line}")
+  done <<< "$(find_apps "${query}")"
+
+  if [ ${#apps[@]} -eq 1 ] && [ -z "${apps[0]}" ] ; then
+    echo "Unable to find application named '${query}'!"
+    exit 1
+  elif [ ${#apps[@]} -eq 1 ] ; then
+    $verbose && echo "Launching ${apps[0]}"
+    open -a "${apps[0]}" "$@"
+  else
+    echo "Found ${#apps[@]} matching applications:"
+    local i
+    for (( i=0 ; i < ${#apps[@]} ; i++ )) ; do
+      printf "%2i) %s\n" "$i" "${apps[$i]}"
+    done
+    printf " q) Quit\n"
+
+    local app
+    read -p "Selection [0]: " app
+    case "${app}" in 
+      "")
+        app=0
+        ;;
+      "q" | "Q")
+        exit 0
+        ;;
+    esac
+    [ "${app}" -ge 0 ] && [ "${app}" -lt "${#apps[@]}" ] && open -a "${apps[$app]}" "$@" || echo "Invalid selection!" && exit 1
+  fi
+}
+
+main "$@"
