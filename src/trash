@@ -38,6 +38,8 @@
 #                     Supress `osascript` output when moving files to trash.
 # v0.7   2021-02-26 - Morgan Aldridge
 #                     Check for Full Disk Access on macOS >= 10.15.
+# v0.7.1 2021-04-09 - Morgan Aldridge
+#                     Improved Full Disk Access instructions.
 #
 
 # global variables
@@ -146,8 +148,9 @@ function realpath()
 if ! have_full_disk_access ; then
   printf "%s requires Full Disk Access!\n\n" "$(basename "$0")"
   printf "Please go to System Preferences > Security & Privacy > Privacy > Full Disk Access,\n"
-  printf "press the '+' button, and add /usr/libexec/ssh-keygen-wrapper and your terminal\n"
-  printf "application (usually /Applications/Utilities/Terminal.app).\n"
+  printf "press the '+' button, and add:\n\n"
+  printf "1. Your terminal application (usually /Applications/Utilities/Terminal.app)\n"
+  printf "2. /usr/libexec/sshd-keygen-wrapper (if you plan to connect via SSH)\n"
   exit 1
 fi
 
