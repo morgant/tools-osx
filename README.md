@@ -48,6 +48,8 @@ TOOLS
 INSTALLATION
 ------------
 
+### Installing from Source
+
 Installing all tools:
 
 1. Clone this repository or download and extract the tools.
@@ -59,6 +61,18 @@ Installing one or more specific tools:
 1. Clone this repository or download and extract the tools.
 2. Run `rake`
 3. Run `rake 'install[ql,trash]'`, specifying individual tools in a comma separated list between the square brackets. (If you don't have write permission on `/usr/local/bin`, you'll need to prepend `sudo`.)
+
+### Installing Using a `zsh` Plugin Manager
+
+_Note: You cannot install `clipcat`, `dict`, or `with` using this method._
+
+macOS 10.15 Catalina and newer now use `zsh` as the default shell. If you're using a `zsh` plugin manager, you can install individual tools as follows and they'll be automatically downloaded, installed, and kept up-to-date:
+
+* Using [zinit](https://github.com/zdharma/zinit): Add the following to your `~/.zshrc` file for each tool you wish to install, `trash`, for example:
+
+```shell
+zinit wait'1' lucid light-mode as"program" pick"src/trash" for morgant/tools-osx
+```
 
 OTHER TOOLS
 -----------
