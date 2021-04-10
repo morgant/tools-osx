@@ -48,9 +48,17 @@ TOOLS
 INSTALLATION
 ------------
 
-1. Download and extract the tools.
+Installing all tools:
+
+1. Clone this repository or download and extract the tools.
 2. Run `rake`.
-3. Run `sudo rake install`. (If you have write permission on `/usr/local/bin`, you don’t need to `sudo`.)
+3. Run `rake install`. (If you don't have write permission on `/usr/local/bin`, you'll need to prepend `sudo`.)
+
+Installing one or more specific tools:
+
+1. Clone this repository or download and extract the tools.
+2. Run `rake`
+3. Run `rake 'install[ql,trash]'`, specifying individual tools in a comma separated list between the square brackets. (If you don't have write permission on `/usr/local/bin`, you'll need to prepend `sudo`.)
 
 OTHER TOOLS
 -----------
