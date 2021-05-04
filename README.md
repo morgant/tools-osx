@@ -82,6 +82,7 @@ Looking for other Mac OS X-specific command line tools to complement these? Chec
 * [`appswitch`](http://sabi.net/nriley/software/#appswitch) and [`launch`](http://sabi.net/nriley/software/#launch) by Nicholas Riley
 * [`asprint`](http://hasseg.org/asprint/), [`icalBuddy`](http://hasseg.org/icalBuddy/), [`setWeblocThumb`](http://hasseg.org/setWeblocThumb/), and [`trash`](http://hasseg.org/trash/) by Ali Rantakari
 * [`contacts`](https://web.archive.org/web/20160319061131/http://www.gnufoo.org/contacts/) by Shane Celis
+* [`dark-mode`](https://github.com/sindresorhus/dark-mode) by Sindre Sorhus
 * [`dockutil`](https://github.com/kcrawford/dockutil) by Kyle Crawford
 * [`duti`](https://github.com/moretension/duti) by Andrew Mortensen
 * [`get-location`](https://github.com/lindes/get-location) by David Lindes
