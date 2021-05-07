@@ -74,6 +74,14 @@ macOS 10.15 Catalina and newer now use `zsh` as the default shell. If you're usi
 zinit wait'1' lucid light-mode as"program" pick"src/trash" for morgant/tools-osx
 ```
 
+## Installing only `trash` as a shell script
+
+Using [zinit](https://github.com/zdharma/zinit), you can install just the `trash` shell script by adding this to your `.zshrc` file
+
+```shell
+zinit wait'1' lucid light-mode as"program" pick"src/trash" for morgant/tools-osx
+```
+
 OTHER TOOLS
 -----------
 
