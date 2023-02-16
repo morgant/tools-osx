@@ -25,14 +25,14 @@ task :default do
                   EOF
     else
       mkdir './.tmp/'
-      cp './src/dict', './.tmp/dict.rb'
+      cp './src/dict/dict', './.tmp/dict.rb'
       sh "#{mrc} -o ./bin/dict ./.tmp/dict.rb"
       rm_rf './.tmp/'
     end
   end
   
   scrs = Dir.nonhidden_entries('./src/'); scrs.delete 'dict'
-  scrs.each {|f| cp "./src/#{f}", "./bin/#{f}" unless File.exist? "./bin/#{f}"}
+  scrs.each {|f| cp "./src/#{f}/#{f}", "./bin/#{f}" unless File.exist? "./bin/#{f}"}
 end
 
 task :install => [:default] do |t, args|

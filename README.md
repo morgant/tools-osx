@@ -74,6 +74,14 @@ macOS 10.15 Catalina and newer now use `zsh` as the default shell. If you're usi
 zinit wait'1' lucid light-mode as"program" pick"src/trash" for morgant/tools-osx
 ```
 
+* Using [Antidote](https://github.com/mattmc3/antidote): Add the following to your `~/.zsh_plugins.txt` file for each tool you wish to install, `trash`, for example:
+
+```shell
+morgant/tools-osx kind:path path:src/trash
+```
+
+Depending on how you setup Antidote, the tool(s) will either be available automatically when you start a new session (or run `source ~/.zshrc` in the current session), or will be available after you re-bundle, see [Antidote docs](https://getantidote.github.io/usage#loading-plugins) for details.
+
 OTHER TOOLS
 -----------
 
